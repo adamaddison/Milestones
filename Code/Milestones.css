@@ -1,0 +1,1409 @@
+body{ font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-size: cover; background-repeat: repeat-y }
+
+@media only screen and (min-width: 1000px)
+{
+	#setupWindow
+	{
+		position: absolute;
+		border-radius: 12px;
+		width: 400px;
+		font-size: 10pt;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		z-index: 12;
+		min-height: 400px;
+		max-height: 70%;
+		visibility: hidden;
+		opacity: 0;
+		overflow-y: scroll
+	}
+	#settingsWindow
+	{
+		position: absolute;
+		border-radius: 12px;
+		width: 400px;
+		font-size: 10pt;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		z-index: 12;
+		min-height: 400px;
+		max-height: 70%;
+		overflow: scroll
+	}
+	#exportWindow
+	{
+		position: absolute;
+		border-radius: 12px;
+		width: 400px;
+		font-size: 10pt;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		z-index: 14;
+		min-height: 400px;
+		max-height: 70%;
+		visibility: hidden;
+		opacity: 0;
+		overflow-y: scroll
+	}
+	#importWindow
+	{
+		position: absolute;
+		border-radius: 12px;
+		width: 400px;
+		font-size: 10pt;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		z-index: 12;
+		min-height: 400px;
+		max-height: 70%;
+		visibility: hidden;
+		opacity: 0;
+		overflow-y: scroll
+	}	
+	
+	#setupWindowHeader
+	{
+		text-align: center;
+		padding: 7px;
+		font-size: 13pt;
+		font-weight: bold;
+		border-radius: 12px 12px 0px 0px;
+		position: sticky;
+		top: 0px;
+		z-index: 10
+	}
+	#settingsWindowHeader
+	{
+		text-align: center;
+		padding: 7px;
+		font-size: 13pt;
+		font-weight: bold;
+		border-radius: 12px 12px 0px 0px;
+		top: 0px;
+		position: sticky;
+		z-index: 10
+	}
+	#exportWindowHeader
+	{
+		text-align: center;
+		padding: 7px;
+		font-size: 13pt;
+		font-weight: bold;
+		border-radius: 12px 12px 0px 0px;
+		top: 0px;
+		position: sticky;
+		z-index: 15
+	}
+	#importWindowHeader
+	{
+		text-align: center;
+		padding: 7px;
+		font-size: 13pt;
+		font-weight: bold;
+		border-radius: 12px 12px 0px 0px;
+		top: 0px;
+		position: sticky;
+		z-index: 13
+	}
+
+	#addMilestone
+	{
+		font-size: 14pt;
+		margin-top: 6px
+	}
+	
+	.milestoneCountdownsLight
+	{
+		position: absolute;
+		left: 50%;
+		transform: translate(-50%);
+		border-radius: 12px;
+		width: 340px;
+		box-shadow: 7px 7px 30px 0px rgba(0, 0, 0, 0.4), -7px -7px 30px 0px rgba(0, 0, 0, 0.4);
+		z-index: 10;
+		top: 113px
+	}
+	
+	.milestoneCountdownsDark
+	{
+		position: absolute;
+		left: 50%;
+		transform: translate(-50%);
+		border-radius: 12px;
+		width: 340px;
+		box-shadow: rgba(255, 255, 255, 0.6) 7px 7px 30px 0px, rgba(255, 255, 255, 0.4) -7px -7px 30px 0px;
+		z-index: 10;
+		top: 113px
+	}
+	#milestoneCountdownsHeader
+	{
+		text-align: center;
+		font-size: 13pt;
+		font-weight: bold;
+		padding: 7px;
+		border-radius: 12px 12px 0px 0px
+	}
+	#milestoneCountdownsContent
+	{
+		padding: 10px;
+		border-radius: 0px 0px 12px 12px
+	}
+	.milestoneCountdownsContentLight
+	{
+		background-color: rgb(241, 241, 241);
+		color: rgb(0, 0, 0)
+	}
+	.milestoneCountdownsContentDark
+	{
+		background-color: rgb(0, 0, 0);
+		color: rgb(255, 255, 255)
+	}
+	.milestoneProgressBars
+	{
+		position: relative;
+		height: 5px;
+		background-color: #b8b8b8;
+		margin-bottom: 5px
+	}
+	.daysUntilMilestone
+	{
+		position: absolute;
+		display: inline-block;
+		right: 10px
+	}
+	.milestoneName
+	{
+		display: inline-block;
+		overflow-x: scroll;
+		width: 74%;
+		white-space: nowrap
+	}
+	
+	#statusBar
+	{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 28px;
+		background-color: rgba(0, 0, 0, 0.6);
+		font-size: 13pt;
+		padding-left: 8px;
+		padding-top: 3pt;
+		box-sizing: border-box;
+		overflow: hidden;
+		color: white
+	}
+	#statusBar:hover
+	{
+		background-color: rgba(65, 65, 65, 0.6)
+	}
+}
+
+@media only screen and (max-width: 999px)
+{
+	#setupWindow
+	{
+		position: absolute;
+		margin-top: -28px;
+		margin-left: -8px;
+		width: 100%;
+		height: 100%;
+		font-size: 10pt;
+		text-align: center;
+		z-index: 12;
+		overflow: scroll;
+		visibility: hidden;
+		opacity: 0
+	}
+	#settingsWindow
+	{
+		position: absolute;
+		margin-top: -28px;
+		margin-left: -8px;
+		width: 100%;
+		height: 100%;
+		font-size: 10pt;
+		text-align: center;
+		z-index: 12;
+		overflow: scroll
+	}
+	#exportWindow
+	{
+		position: absolute;
+		margin-top: -28px;
+		margin-left: -8px;
+		width: 100%;
+		height: 100%;
+		font-size: 10pt;
+		text-align: center;
+		z-index: 14;
+		overflow: scroll;
+		visibility: hidden;
+		opacity: 0
+	}
+	#importWindow
+	{
+		position: absolute;
+		margin-top: -28px;
+		margin-left: -8px;
+		width: 100%;
+		height: 100%;
+		font-size: 10pt;
+		text-align: center;
+		z-index: 12;
+		overflow: scroll;
+		visibility: hidden;
+		opacity: 0
+	}
+	
+
+	#setupWindowHeader
+	{
+		text-align: center;
+		padding: 7px;
+		font-size: 13pt;
+		font-weight: bold;
+		position: sticky;
+		top: 0px;
+		z-index: 10
+	}
+	#settingsWindowHeader
+	{
+		text-align: center;
+		padding: 7px;
+		font-size: 13pt;
+		font-weight: bold;
+		z-index: 10
+	}
+	#exportWindowHeader
+	{
+		text-align: center;
+		padding: 7px;
+		font-size: 13pt;
+		font-weight: bold;
+		z-index: 15
+	}
+	#importWindowHeader
+	{
+		text-align: center;
+		padding: 7px;
+		font-size: 13pt;
+		font-weight: bold;
+		z-index: 13
+	}
+
+	#addMilestone
+	{
+		position: relative;
+		width: 100%;
+		font-size: 14pt
+	}
+	
+	#milestoneCountdowns
+	{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 100%;
+		box-shadow: 7px 7px 30px 0px rgba(0, 0, 0, 0.4), -7px -7px 30px 0px rgba(0, 0, 0, 0.4);
+		z-index: 10
+	}
+	#milestoneCountdownsHeader
+	{
+		text-align: center;
+		font-size: 13pt;
+		font-weight: bold;
+		padding: 7px
+	}
+	#milestoneCountdownsContent
+	{
+		padding: 10px;
+		border-radius: 0px;
+		height: 100%
+	}
+	.milestoneCountdownsContentLight
+	{
+		background-color: rgb(241, 241, 241);
+		color: rgb(0, 0, 0)
+	}
+	.milestoneCountdownsContentDark
+	{
+		background-color: rgb(0, 0, 0);
+		color: rgb(255, 255, 255)
+	}
+	.milestoneProgressBars
+	{
+		position: relative;
+		height: 5px;
+		background-color: #b8b8b8;
+		margin-bottom: 5px
+	}
+	.daysUntilMilestone
+	{
+		position: absolute;
+		display: inline-block;
+		right: 10px
+	}
+	.milestoneName
+	{
+		display: inline-block;
+		overflow-x: scroll;
+		width: 73%;
+		white-space: nowrap
+	}
+	
+	#statusBar
+	{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 26px;
+		background-color: rgba(0, 0, 0, 0.6);
+		font-size: 13pt;
+		padding-left: 8px;
+		padding-top: 3pt;
+		box-sizing: border-box;
+		overflow-x: scroll;
+		white-space: nowrap;
+		color: white
+	}
+}
+
+
+#setupWindow p
+{
+	margin-top: 6px;
+	margin-bottom: 0px;
+	padding: 4px
+}
+
+#doneButton, #doneButtonImport, #doneButtonExport
+{
+	position: absolute;
+	right: 14px;
+	font-weight: bold;
+	font-size: 11pt;
+	color: DodgerBlue
+}
+
+#milestoneCountdownsDoneButton
+{
+	font-size: 11pt;
+	color: dodgerblue;
+	position: absolute;
+	right: 10px
+}
+
+#info
+{
+	position: absolute;
+	left: 7px;
+	font-weight: bold;
+	font-size: 10pt
+}
+
+#exportButton
+{
+	position: absolute;
+	left: 34px;
+	font-weight: normal;
+	font-size: 12pt;
+	color: DodgerBlue
+}
+
+#greyedOutBackground
+{
+	position: fixed;
+	margin-top: -28px;
+	margin-left: -8px;
+	width: 100%;
+	height: 100%;
+	z-index: 11;
+	visibility: hidden;
+	opacity: 0
+}
+
+.milestoneMarker
+{
+	position: absolute;
+	width: 5px;
+	height: 42px;
+	padding: 0px;
+	background-color: DodgerBlue;
+	-webkit-transition: height 0.2s ease-out;
+	transition: height 0.2s ease-out;
+	border-radius: 6px 6px 0 0;
+	top: 3px;
+	display: none
+}
+
+.milestoneLabel
+{
+	position: absolute;
+	display: none;
+	height: 18px;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+	top: 42px;
+	background-color: DodgerBlue;
+	color: white;
+	padding: 5px;
+	border-radius: 16px;
+	font-size: 12pt;
+	transform: translate(-19px);
+	-webkit-transition: top 0.2s ease-out;
+	transition: top 0.2s ease-out;
+	white-space: nowrap
+}
+
+.milestoneLabel:hover
+{
+	background-color: #0073e6
+}
+
+#progressLabel
+{
+	position: absolute;
+	width: 52px;
+	text-align: center;
+	top: 50%;
+	padding: 5px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+	background-color: black;
+	font-size: 12pt;
+	border-radius: 16px;
+	z-index: 9;
+	font-weight: bold
+}
+
+#daysRemaining
+{
+	position: relative;
+	text-align: center;
+	padding: 5px;
+	font-size: 21pt;
+	font-weight: bold;
+	margin-top: 28px;
+	z-index: 9;
+	margin-left: 55px
+}
+#daysRemaining:hover{ color: gray ! important }
+
+input[type=number]
+{
+	width: 40px
+}
+
+input[type=date]
+{
+	width: 95px
+}
+
+p.extraMilestones input[type=text]
+{
+	width: 165px
+}
+
+.inputLight
+{
+	background-color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0)
+}
+
+.inputDark
+{
+	background-color: rgb(67, 67, 67);
+	color: rgb(255, 255, 255)
+}
+
+.dialog
+{
+	position: absolute;
+	border-radius: 12px;
+	width: 300px;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	z-index: 14
+}
+
+.dialogTitle
+{
+	font-size: 13pt;
+	font-weight: bold;
+	padding: 5px;
+	padding-top: 13px;
+	padding-bottom: 2px
+}
+
+.dialogText
+{
+	font-size: 10pt;
+	padding: 5px;
+	padding-bottom: 13px
+}
+
+.dialogClose
+{
+	padding: 11px;
+	color: dodgerBlue;
+	font-weight: bold;
+	font-size: 12pt
+}
+
+.dialogClose:active
+{
+	padding: 11px;
+	color: dodgerBlue;
+	font-weight: bold;
+	background-color: rgba(0, 0, 0, 0.14);
+	border-radius: 0px 0px 12px 12px
+}
+
+.dialogNoLight
+{
+	display: inline-block;
+	width: 50%;
+	box-sizing: border-box;
+	padding: 11px;
+	color: dodgerBlue;
+	font-weight: bold;
+	border-top: 1px solid lightGrey
+}
+.dialogYesLight
+{
+	display: inline-block;
+	width: 50%;
+	box-sizing: border-box;
+	padding: 11px;
+	color: dodgerBlue;
+	font-weight: bold;
+	border-top: 1px solid lightGrey;
+	border-left: 1px solid lightGrey
+}
+
+.dialogNoDark
+{
+	display: inline-block;
+	width: 50%;
+	box-sizing: border-box;
+	padding: 11px;
+	color: dodgerBlue;
+	font-weight: bold;
+	border-top: 1px solid rgb(90, 90, 90)
+}
+.dialogYesDark
+{
+	display: inline-block;
+	width: 50%;
+	box-sizing: border-box;
+	padding: 11px;
+	color: dodgerBlue;
+	font-weight: bold;
+	border-top: 1px solid rgb(90, 90, 90);
+	border-left: 1px solid rgb(90, 90, 90)
+}
+
+#greyedOutBackgroundDialog
+{
+	position: fixed;
+	margin-top: -28px;
+	margin-left: -8px;
+	background-color: rgba(0, 0, 0, 0.5);
+	width: 100%;
+	height: 100%;
+	z-index: 13;
+	visibility: hidden;
+	opacity: 0
+}
+
+.crossButton{ vertical-align: middle }
+
+#toggleWeeksRemaining{ vertical-align: middle }
+
+#setupButton
+{
+	position: fixed;
+	left: 50%;
+	transform: translate(-50%);
+	width: 275px;
+	font-size: 20pt;
+	bottom: 10px
+}
+
+#openSettings
+{
+	text-align: left;
+	padding: 9px !important
+}
+.settingsItem{ padding: 2px }
+#intoSettings{ vertical-align: middle; position: absolute; right: 9px; width: 18px; }
+
+#backToConfigure
+{
+	width: 93px;
+	position: absolute;
+	left: 10px;
+	top: 0px
+}
+
+.settingsItemSubTitle
+{
+	display: block;
+	color: gray;
+	margin-top: 4px;
+	margin-left: 9px
+}
+
+.timeRemainingSelection
+{
+	text-align: left;
+	color: gray;
+	margin: 0px
+}
+
+.languageSelection
+{
+	text-align: left;
+	color: gray;
+	margin: 0px;
+	margin-bottom: 13px;
+	margin-top: 13px
+}
+
+.themeSelection
+{
+	text-align: left;
+	color: gray;
+	margin: 0px;
+	margin-top: 13px
+}
+.themeOption
+{
+	display: inline-block
+}
+.themeOption p
+{
+	margin-top: 0px;
+	margin-bottom: 5px
+}
+
+#resetValues, #resetToYear
+{
+	padding: 7px;
+	margin-bottom: 4px;
+	margin-top: 0px;
+	text-align: center
+}
+
+#resetSettings
+{
+	padding: 7px;
+	margin-top: 0px;
+	text-align: center
+}
+
+#importCountdown
+{
+	padding: 7px;
+	margin-top: 15px;
+	text-align: center
+}
+
+#endTextHTML{ padding: 7px }
+
+.selectionItem
+{
+	text-align: left;
+	padding: 9px !important;
+	margin: 0px;
+	border-bottom: 1px solid rgb(188, 188, 188)
+}
+
+.selectionLabel
+{
+	padding: 9px
+}
+
+.tickGraphic
+{
+	vertical-align: middle;
+	position: absolute;
+	right: 9px;
+	width: 18px;
+	margin-top: -2px
+}
+
+#downArrow
+{
+	position: relative;
+	width: 18px
+}
+
+input
+{
+	border: 0px;
+	border-bottom: 1px solid rgb(188, 188, 188);
+	font-size: 10pt
+}
+
+#setupWindow, #exportWindow, #importWindow
+{
+	-webkit-transition: visibility 0.3s ease-out, opacity 0.3s ease-out;
+	transition: visibility 0.3s ease-out, opacity 0.3s ease-out
+}
+
+#exportTextContent, #importTextContent
+{
+	border-bottom: 1px solid rgb(188, 188, 188);
+	min-height: 50px;
+	margin-top: 14px;
+	padding: 5px;
+	max-height: 200px;
+	overflow-y: scroll;
+	word-wrap: break-word
+}
+
+#importTextContent
+{
+	position: relative;
+	padding: 0px;
+	height: 200px
+}
+
+#importTextContent textarea
+{
+	resize: none;
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+	font-size: 10pt;
+	background-color: rgba(0, 0, 0, 0);
+	border: 0px;
+	width: 95%;
+	height: 95%;
+	position: absolute;
+	left: 50%;
+	overflow-y: scroll;
+	padding: 7px;
+	margin: 0px;
+	transform: translate(-50%, -50%);
+	top: 50%
+}
+
+#greyedOutBackground
+{
+	-webkit-transition: visibility 0.3s ease-out, opacity 0.3s ease-out;
+	transition: visibility 0.3s ease-out, opacity 0.3s ease-out
+}
+
+#NoMilestonesText
+{
+	text-align: center;
+	font-weight: normal;
+	font-size: 21pt;
+	margin-top: 12px;
+	margin-bottom: 15px;
+	color: gray
+}
+
+#errorDialog, #importErrorDialog, #importValueErrorDialog
+{
+	position: absolute;
+	border-radius: 12px;
+	width: 300px;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	z-index: 13
+}
+
+#errorList, #importValueErrorList
+{
+	max-height: 300px;
+	display: block;
+	overflow-y: scroll
+}
+
+.errorText
+{
+	font-size: 10pt;
+	padding: 4px
+}
+
+#okButtonErrorDialog, #okButtonImportErrorDialog, #okButtonImportValueErrorDialog
+{
+	display: inline-block;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 11px;
+	color: dodgerBlue;
+	font-weight: bold
+}
+
+#okButtonErrorDialog:active, #okButtonImportErrorDialog:active, #okButtonImportValueErrorDialog:active
+{
+	display: inline-block;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: rgba(0, 0, 0, 0.14);
+	padding: 11px;
+	color: dodgerBlue;
+	font-weight: bold;
+	border-radius: 0px 0px 12px 12px
+}
+
+#themeMenu
+{
+	text-align: center
+}
+
+#autoThemeToggle
+{
+	position: absolute;
+	width: 60px;
+	display: block;
+	margin-top: -22px;
+	right: 0px
+}
+
+#unselectedLangs
+{
+	position: absolute;
+	left: 50%;
+	top: 508px;
+	transform: translate(-50%);
+	width: 180px;
+	border-radius: 12px;
+	visibility: hidden;
+	opacity: 0;
+	-webkit-transition: visibility 0.3s ease-out, opacity 0.3s ease-out;
+	transition: visibility 0.3s ease-out, opacity 0.3s ease-out
+}
+
+#unselectedLangsHeader
+{
+	border-radius: 12px 12px 0 0;
+	font-size: 12pt;
+	font-weight: bold;
+	padding: 7px
+}
+
+#downArrowLangs
+{
+	vertical-align: middle; position: absolute; right: 9px; width: 18px; display: block; margin-top: -17px
+}
+
+#tickITcontainer
+{
+	border-radius: 0 0 12px 12px;
+	border-bottom: 0px
+}
+
+#backgroundSelectionPanel
+{
+	position: absolute;
+	top: 50%;
+	height: 60%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 300px;
+	border-radius: 12px;
+	visibility: hidden;
+	opacity: 0;
+	-webkit-transition: visibility 0.3s ease-out, opacity 0.3s ease-out;
+	transition: visibility 0.3s ease-out, opacity 0.3s ease-out;
+	display: grid;
+	z-index: 15;
+	text-align: center;
+	font-size: 10pt;
+	min-height: 300px
+}
+
+#backgroundSelectionHeader
+{
+	border-radius: 12px 12px 0 0;
+	font-size: 12pt;
+	font-weight: bold;
+	padding: 7px;
+	
+}
+
+#backgroundSelectionContent
+{
+	overflow-y: scroll;
+	border-radius: 0 0 12px 12px;
+	padding-top: 9px
+}
+
+.selectedBg
+{
+	font-weight: bold
+}
+.selectedBg img, .selectedBg div
+{
+	border: 5px solid dodgerBlue
+}
+
+#backgroundCustomOption
+{
+	border-radius: 0 0 12px 12px
+}
+
+#setCustomBgButton
+{
+	display: inline-block;
+	width: 20%;
+	left: -3px;
+	position: relative;
+	top: -1px
+}
+
+.backgroundThumnail
+{
+	width: 130px;
+	height: 130px;
+	border-radius: 10px;
+	object-fit: cover
+}
+
+#defaultBackgroundThumbnail
+{
+	width: 130px;
+	height: 130px;
+	border-radius: 10px;
+	display: inline-block;
+	box-sizing: border-box
+}
+
+.defaultBackgroundThumbnailDark
+{
+	background-color: #151515
+}
+
+.defaultBackgroundThumbnailLight
+{
+	background-color: #ffffff
+}
+
+.bgItem
+{
+	display: inline-block;
+	width: 49%;
+	position: relative
+}
+.bgItem img
+{
+	box-sizing: border-box
+}
+
+.row
+{
+	display: block;
+	width: 300px;
+	margin-bottom: 9px
+}
+
+#imageURLOverlayUI
+{
+	background-image: linear-gradient(#e1e1e1, #777);
+	position: relative;
+	width: 130px;
+	left: 50%;
+	border-radius: 5px;
+	height: 28px;
+	transform: translate(-50%);
+	display: block;
+	text-align: left;
+	border: 0px
+}
+
+#imageURLOverlayUI input
+{
+	position: relative;
+	width: 86px;
+	top: 5px;
+	font-size: 9pt;
+	display: inline-block;
+	left: 6px;
+	border: 0px;
+	height: 17px;
+	padding: 0px;
+	border-radius: 0px
+}
+
+#setCustomBackground
+{
+	display: inline-block;
+	right: 8px;
+	position: absolute;
+	top: 5px;
+	padding: 0px;
+	font-weight: bold;
+	color: black
+}
+
+#countdownsMenu
+{
+	display: block;
+	position: absolute;
+	width: 250px;
+	height: 100%;
+	left: -250px;
+	top: 0px;
+	z-index: 10;
+	visibility: hidden;
+	-webkit-transition: left 0.3s ease-out;
+	transition: left 0.3s ease-out, visibility 0.3s ease-out
+}
+
+.countdownsMenuHide
+{
+	left: -250px !important;
+	visibility: hidden !important
+}
+
+.countdownsMenuShow
+{
+	visibility: visible !important;
+	left: 0px !important
+}
+
+#countdownsMenuHeader p
+{
+	margin: 0px;
+	padding: 10px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 13pt
+}
+
+.countdownListItem
+{
+	display: block;
+	padding: 9px;
+	border-bottom: 1px solid rgb(188, 188, 188);
+	margin: 0px;
+	overflow-x: scroll;
+	white-space: nowrap
+}
+.countdownListItemLight
+{
+	background-color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0)
+}
+.countdownListItemDark
+{
+	background-color: rgb(67, 67, 67);
+	color: rgb(255, 255, 255)
+}
+.countdownListItemSelected
+{
+	background-color: rgb(51, 167, 255) !important;
+	color: rgb(255, 255, 255)
+}
+
+#countdownsMenuIcon
+{
+	position: absolute;
+	width: 68px;
+	height: 30px;
+	z-index: 10;
+	top: 33px;
+	left: 5px;
+	border-radius: 19px
+}
+.countdownsMenuIconLight
+{
+	background-color: black
+}
+.countdownsMenuIconDark
+{
+	background-color: rgb(117, 117, 117)
+}
+.hamburgerMenuLine
+{
+	width: 40px;
+	position: relative;
+	height: 4px;
+	background-color: lightGray;
+	left: 14px;
+	top: 1px;
+	margin-top: 4px
+}
+
+#allCountdownsDoneButton
+{
+	font-size: 11pt;
+	color: dodgerblue;
+	position: absolute;
+	right: 10px
+}
+
+#addCountdownButton
+{
+	position: absolute;
+	left: 9px;
+	top: 9px;
+	width: 22px
+}
+
+.crossButtonCountdownList
+{
+	position: absolute;
+	right: 8px;
+	margin-top: 2px
+}
+
+#milestoneMarkerFormatContainer, #milestoneTimeFormatContainer, #addCountdownOptionsContainer
+{
+	position: absolute;
+	left: 50%;
+	top: 178px;
+	transform: translate(-50%);
+	width: 220px;
+	border-radius: 12px;
+	visibility: hidden;
+	opacity: 0;
+	-webkit-transition: visibility 0.3s ease-out, opacity 0.3s ease-out;
+	transition: visibility 0.3s ease-out, opacity 0.3s ease-out
+}
+
+#milestoneTimeFormatContainer{ top: 123px }
+
+#addCountdownOptionsContainer
+{
+	top: 39px;
+	left: 0px;
+	transform: translate(0%)
+}
+
+#milestoneMarkerFormatHeader, #milestoneTimeFormatHeader
+{
+	border-radius: 12px 12px 0 0;
+	font-size: 12pt;
+	font-weight: bold;
+	padding: 7px;
+	text-align: center
+}
+
+#markerDateOption, #monthAndDaysOption, #addCountdownImportOption
+{
+	border-bottom: 0px
+}
+
+
+.opacityFull
+{
+	visibility: visible !important;
+	opacity: 100% !important
+}
+
+.lightModeBackground
+{
+	background-color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0)
+}
+
+.darkModeBackground
+{
+	background-color: rgb(67, 67, 67);
+	color: rgb(255, 255, 255)
+}
+
+.darkModePanelBackground
+{
+	background-color: rgb(0, 0, 0);
+}
+
+.lightModePanelBackground
+{
+	background-color: #f1f1f1
+}
+
+.darkModeHeaderBackground
+{
+	background-color: rgba(67, 67, 67);
+	color: rgb(255, 255, 255);
+	border-bottom: 1px solid rgb(90, 90, 90)
+}
+
+.lightModeHeaderBackground
+{
+	background-color: rgba(255, 255, 255);
+	color: rgb(0, 0, 0);
+	border-bottom: 1px solid lightgray
+}
+
+.darkModeDialogButton
+{
+	border-top: 1px solid rgb(90, 90, 90)
+}
+
+.lightModeDialogButton
+{
+	border-top: 1px solid lightgrey
+}
+
+.darkModeText
+{
+	color: white
+}
+
+.lightModeText
+{
+	color: black
+}
+
+.lightModeListDialogBackground
+{
+	background-color: white;
+	box-shadow: 7px 7px 30px 0px rgba(0, 0, 0, 0.4), -7px -7px 30px 0px rgba(0, 0, 0, 0.4)
+}
+
+.darkModeListDialogBackground
+{
+	background-color: #434343;
+	box-shadow: rgba(255, 255, 255, 0.6) 7px 7px 30px 0px, rgba(255, 255, 255, 0.4) -7px -7px 30px 0px
+}
+
+.lightModeShadow
+{
+	box-shadow: 7px 7px 30px 0px rgba(0, 0, 0, 0.4), -7px -7px 30px 0px rgba(0, 0, 0, 0.4)
+}
+
+.darkModeShadow
+{
+	box-shadow: rgba(255, 255, 255, 0.6) 7px 7px 30px 0px, rgba(255, 255, 255, 0.4) -7px -7px 30px 0px
+}
+
+.darkGreyedOutBackground
+{
+	background-color: rgba(90, 90, 90, 0.5)
+}
+.lightGreyedOutBackground
+{
+	background-color: rgba(0, 0, 0, 0.5)
+}
+
+.darkModeShadowCountdowns
+{
+	box-shadow: rgba(148, 148, 148, 0.6) 12px 12px 33px 2px, rgba(255, 255, 255, 0.6) -12px -12px 33px 2px
+}
+.lightModeShadowCountdowns
+{
+	box-shadow: rgba(75, 75, 75, 0.6) 12px 12px 33px 2px, rgba(255, 255, 255, 0.6) -12px -12px 33px 2px
+}
+
+.outerProgressBarLight
+{
+	position: relative;
+	width: 98%;
+	margin: 0px;
+	height: 40px;
+	padding: 0px;
+	margin: auto;
+	background-color: lightGray;
+	border-radius: 8px 7px 7px 8px;
+	box-shadow: rgba(255, 255, 255, 0.6) 12px 12px 33px 2px, rgba(255, 255, 255, 0.6) -12px -12px 33px 2px;
+}
+
+.outerProgressBarDark
+{
+	position: relative;
+	width: 98%;
+	margin: 0px;
+	height: 40px;
+	padding: 0px;
+	margin: auto;
+	background-color: lightGray;
+	border-radius: 8px 7px 7px 8px;
+	box-shadow: rgba(0, 0, 0, 0.6) 12px 12px 33px 2px, rgba(0, 0, 0, 0.6) -12px -12px 33px 2px;
+}
+
+.innerProgressBarLight
+{
+	position: absolute;
+	left: 0px;
+	height: 40px;
+	padding: 0px;
+	background-color: black;
+	-webkit-transition: width 0.5s ease-out;
+	transition: width 0.5s ease-out;
+	border-radius: 7px 0 0 7px
+}
+
+.innerProgressBarDark
+{
+	position: absolute;
+	left: 0px;
+	height: 40px;
+	padding: 0px;
+	background-color: rgb(117, 117, 117);
+	-webkit-transition: width 0.5s ease-out;
+	transition: width 0.5s ease-out;
+	border-radius: 7px 0 0 7px
+}
+
+.blueBar
+{
+	position: absolute;
+	left: 0px;
+	height: 40px;
+	padding: 0px;
+	background-color: dodgerblue;
+	-webkit-transition: width 0.5s ease-out;
+	transition: width 0.5s ease-out;
+	border-radius: 7px 0 0 7px
+}
+.greenBar
+{
+	position: absolute;
+	left: 0px;
+	height: 40px;
+	padding: 0px;
+	background-color: rgb(64, 195, 80);
+	-webkit-transition: width 0.5s ease-out;
+	transition: width 0.5s ease-out;
+	border-radius: 7px
+}
+
+.timeRemainingDark
+{
+    color: rgb(255, 255, 255);
+    text-shadow: rgb(0, 0, 0) 1px 1px 7px, rgb(0, 0, 0) -1px -1px 7px
+}
+.timeRemainingLight
+{
+	color: rgb(0, 0, 0);
+	text-shadow: rgb(255, 255, 255) 1px 1px 7px, rgb(255, 255, 255) -1px -1px 7px
+}
+
+.standOutMarker
+{
+	height: 72px
+}
+
+.standOutLabel
+{
+	top: 72px
+}
+
+.greyedOutText
+{
+	color: grey
+}

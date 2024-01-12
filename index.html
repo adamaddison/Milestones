@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Milestones</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-sanitize.js"></script>
+	<script src="Code/Milestones Module.js"></script>
+	<script src="Code/Root/RootService.js"></script>
+	<script src="Code/Root/RootController.js"></script>
+	<script src="Code/Configure/ConfigureService.js"></script>
+	<script src="Code/Configure/ConfigureController.js"></script>
+	<script src="Code/Settings/SettingsService.js"></script>
+	<script src="Code/Settings/SettingsController.js"></script>
+	<script src="Code/CountdownList/CountdownListService.js"></script>
+	<script src="Code/CountdownList/CountdownListController.js"></script>
+	<script src="Code/MilestoneCountdowns/MilestoneCountdownsService.js"></script>
+	<script src="Code/MilestoneCountdowns/MilestoneCountdownsController.js"></script>
+	<script src="Code/StatusBar/StatusBarService.js"></script>
+	<script src="Code/StatusBar/StatusBarController.js"></script>
+	<script src="Code/ProgressBar/ProgressBarService.js"></script>
+	<script src="Code/ProgressBar/ProgressBarController.js"></script>
+
+	<link rel="stylesheet" href="Code/Milestones.css">
+	<link rel="shortcut icon" type="image/png" href="Icons/Milestones.png" />
+</head>
+
+<body>
+
+
+<div ng-app="milestonesModule">
+<div ng-controller="root-controller" id="application">
+
+<div id="greyedOutBackground" ng-class="{'opacityFull': show.configure.window || show.settings.window || show.importCountdown.window, 'darkGreyedOutBackground': theme.value == dark, 'lightGreyedOutBackground': theme.value == light }"></div>
+<div id="greyedOutBackgroundDialog" ng-class="{'opacityFull': show.settings.resetValues || show.settings.resetToYear || show.settings.resetSettings || show.configure.info || show.configure.error || show.countdownList.confirmDelete || show.statusBarDialog || show.exportCountdown || show.importCountdown.error || show.importCountdown.valueErrors}"></div>
+
+
+<div ng-controller="configure-controller">
+<div id="setupWindow" ng-class="{'opacityFull': show.configure.window, 'lightModePanelBackground': theme.value == light, 'darkModePanelBackground': theme.value == dark}">
+	<div id="setupWindowHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}">
+		<span id="info" ng-click="show.configure.info = true"><img src="Icons/info.svg" /></span> <span id="exportButton" ng-click="exportCountdown()">Export</span> Configure <span id="doneButton" ng-click="saveCountdown()">Done</span>
+	</div><br>
+	
+	
+	<p id="openSettings" ng-click="show.settings.window = true" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">Settings <img id="intoSettings" src="Icons/intoSettings.svg" /></p><br>
+	
+	<p ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">Countdown Name: <input type="text" size="22" ng-model="countdowns[currentCD.index].name" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}"></input></p>
+	<p class="settingsItem" id="endTextHTML" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}"> Countdown End Message: <input type="text" ng-model="countdowns[currentCD.index].endMessage" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}"></input> </p>
+	<p ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">Start Date: <input type="date" ng-model="countdowns[currentCD.index].startDate" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}"></input></p>
+	<p ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">End Date: <input type="date" ng-model="countdowns[currentCD.index].endDate" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}"></input></p><br>
+
+	<p ng-repeat="milestone in countdowns[currentCD.index].milestones track by $index" id="milestone{{$index}}" class="extraMilestones" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+		Name: <input type="text" size="22" ng-class="{'inputLight': theme.value == light, 'inputDark': theme.value == dark}" ng-model="milestone.name">
+		Date: <input type="date" size="8" ng-class="{'inputLight': theme.value == light, 'inputDark': theme.value == dark}" ng-model="milestone.date">
+		<span ng-click="deleteMilestone($index)"><img class="crossButton" src="Icons/crossButton.svg" /></span>
+	</p>
+<br><span id="addMilestone" ng-click="addMilestone()" ng-class="{'lightModeText': theme.value == light, 'darkModeText': theme.value == dark, 'greyedOutText': countdowns[currentCD.index].milestones.length == 10}">+ Add Milestone</span>
+
+</div>
+
+<div id="errorDialog" class="dialog" ng-show="show.configure.error" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+	<div id="errorDialogTitle" class="dialogTitle">Error - Invalid Input</div>
+	<div id="errorDialogText" class="dialogText">The input caused the following errors: </div>
+	<div id="errorList">
+		<p class="errorText" ng-repeat="message in errors.messages"> * {{message.text}}</p>
+	</div>
+	<div id="okButtonErrorDialog" class="closeInfo" ng-class="{'lightModeDialogButton': theme.value == light, 'darkModeDialogButton': theme.value == dark}" ng-click="show.configure.error = false">OK</div>
+</div>
+
+<div id="infoMessage" class="dialog" ng-show="show.configure.info" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+	
+	<div id="infoTitle" class="dialogTitle">About</div>
+	
+	<div id="infoText" class="dialogText">
+	Milestones is a web app for visually measuring how far you are towards reaching a certain day, and allows you to plot milestones that happen along the way.
+	<br></br>
+	Milestones version 5 (January 2024)
+	</div>
+
+	<div id="closeInfo" class="dialogClose" ng-click="show.configure.info = false" ng-class="{'lightModeDialogButton': theme.value == light, 'darkModeDialogButton': theme.value == dark}">Close</div>
+</div>
+
+<div id="exportWindow" ng-class="{'opacityFull': show.exportCountdown, 'lightModePanelBackground': theme.value == light, 'darkModePanelBackground': theme.value == dark}">
+	<div id="exportWindowHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}">Export Countdown <span id="doneButtonExport" ng-click="show.exportCountdown = false">Done</span></div>
+	<p ng-class="{'lightModeText': theme.value == light, 'darkModeText': theme.value == dark}">Copy this text and paste when importing:</p>
+	<div id="exportTextContent" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}" contentEditable="true">{{countdownExportText.value}}</div>
+</div>
+
+</div>
+
+
+
+<div ng-controller="settings-controller" ng-show="show.settings.window">
+<div id="settingsWindow" ng-class="{'lightModePanelBackground': theme.value == light, 'darkModePanelBackground': theme.value == dark}">
+	<div id="settingsWindowHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}"><span ng-click="saveSettings()"><img id="backToConfigure" src="Icons/back.svg" /></span> Settings </div><br>
+	
+	<div class="timeRemainingSelection"><span class="selectionLabel">COUNTDOWN FORMAT</span>
+		<span class="settingsItemSubTitle">Time remaining format:</span>
+		<p id="selectedTimeFormat" class="selectionItem" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}" ng-click="show.settings.time = true; show.settings.marker = false">{{format.time.text}}<img id="downArrowLangs" src="Icons/downArrow.svg"></p>
+		<div id="milestoneTimeFormatContainer" ng-show="show.settings.time" ng-class="{'opacityFull': show.settings.time, 'lightModeListDialogBackground': theme.value == light, 'darkModeListDialogBackground': theme.value == dark}">
+			<div id="milestoneTimeFormatHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}">Time Remaining Format</div>
+			<div id="milestoneTimeFormatContent" ng-class="{'lightModeText': theme.value == light, 'darkModeText': theme.value == dark}">
+				<p class="selectionItem" ng-click="format.time = formats.time.days; show.settings.time = false">Days<img id="tickDays" class="tickGraphic" ng-hide="format.time.index != formats.time.days.index" src="Icons/tick.svg"></p>
+				<p class="selectionItem" ng-click="format.time = formats.time.weeks; show.settings.time = false">Weeks and Days<img id="tickWeeks" class="tickGraphic" ng-hide="format.time.index != formats.time.weeks.index" src="Icons/tick.svg"></p>
+				<p class="selectionItem" ng-click="format.time = formats.time.months; show.settings.time = false">Months, Weeks, and Days<img id="tickMonths" class="tickGraphic" ng-hide="format.time.index != formats.time.months.index" src="Icons/tick.svg"></p>
+				<p class="selectionItem" ng-click="format.time = formats.time.monthsdays; show.settings.time = false" id="monthAndDaysOption">Months and Days<img id="tickMonthsDays" class="tickGraphic" ng-hide="format.time.index != formats.time.monthsdays.index" src="Icons/tick.svg"></p>
+			</div>
+		</div>
+	</div>
+	<div class="timeRemainingSelection"><span class="settingsItemSubTitle">Milestone marker format:</span>
+		<p id="selectedMarkerFormat" class="selectionItem" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}" ng-click="show.settings.marker = true; show.settings.time = false">{{format.marker.text}}<img id="downArrowLangs" src="Icons/downArrow.svg"></p>
+		<div id="milestoneMarkerFormatContainer" ng-show="show.settings.marker" ng-class="{'opacityFull': show.settings.marker, 'lightModeListDialogBackground': theme.value == light, 'darkModeListDialogBackground': theme.value == dark}">
+			<div id="milestoneMarkerFormatHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}">Milestone Marker Format</div>
+			<div id="milestoneMarkerFormatContent" ng-class="{'lightModeText': theme.value == light, 'darkModeText': theme.value == dark}">
+				<p class="selectionItem" ng-click="format.marker = formats.marker.percentage; show.settings.marker = false">Percentage<img id="tickPercentage" class="tickGraphic" ng-hide="format.marker.index != formats.marker.percentage.index" src="Icons/tick.svg"></p>
+				<p class="selectionItem" ng-click="format.marker = formats.marker.number; show.settings.marker = false">Day Number<img id="tickDayNum" class="tickGraphic" ng-hide="format.marker.index != formats.marker.number.index" src="Icons/tick.svg"></p>
+				<p class="selectionItem" ng-click="format.marker = formats.marker.date; show.settings.marker = false" id="markerDateOption">Date<img id="tickDate" class="tickGraphic" ng-hide="format.marker.index != formats.marker.date.index" src="Icons/tick.svg"></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="themeSelection">
+	   <span class="selectionLabel">APPEARANCE</span>
+	   <div class="settingsItem" id="themeMenu" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+			<div class="themeOption" ng-click="theme.value = dark; initialiseBackground()"><img id="toggleWeeksRemaining" src="Icons/darkTheme.svg" width="120px" /> <p>Dark</p><img class="themeOptionTickBox" id="tickBoxDark" ng-src="{{theme.value == dark?themeTick:themeNoTick}}" height="27px" /></div>
+			<div class="themeOption" ng-click="theme.value = light; initialiseBackground()"><img id="toggleWeeksRemaining" src="Icons/lightTheme.svg" width="120px" /> <p>Light</p><img class="themeOptionTickBox" id="tickBoxLight" ng-src="{{theme.value == light?themeTick:themeNoTick}}" height="27px" /></div>
+			<p class="selectionItem" ng-click="autoThemeSetting.value = !autoThemeSetting.value; initialiseTheme(); initialiseBackground()"> Automatic<img id="autoThemeToggle" ng-src="{{autoThemeSetting.value?on:off}}" height="30px" /></p>
+	   </div>
+	</div>
+	<p class="settingsItem selectionItem" ng-click="show.settings.backgrounds.dark = true; show.settings.backgrounds.light = false" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">Dark Mode Background<img id="downArrowLangs" src="Icons/downArrow.svg"></p>
+	<p class="settingsItem selectionItem" ng-click="show.settings.backgrounds.light = true; show.settings.backgrounds.dark = false" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">Light Mode Background<img id="downArrowLangs" src="Icons/downArrow.svg"></p>
+		
+		<div class="languageSelection"> <span class="selectionLabel">COUNTDOWN LANGUAGE</span>
+			<p class="selectionItem" id="selectedLang" ng-click="show.settings.languages = true" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">{{language.value.text}}<img id="downArrowLangs" src="Icons/downArrow.svg"></p>
+		</div>
+		<div id="unselectedLangs" ng-show="show.settings.languages" ng-class="{'opacityFull': show.settings.languages, 'lightModeListDialogBackground': theme.value == light, 'darkModeListDialogBackground': theme.value == dark}">
+			<div id="unselectedLangsHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}">Language</div>
+			<div id="unselectedLangsContent" ng-class="{'lightModeText': theme.value == light, 'darkModeText': theme.value == dark}">
+			  <p class="selectionItem" ng-click="changeLanguage(0)" id="tickENcontainer">English<img ng-show="language.value == languages.English" ng-hide="language.value.index != languages.English.index" id="tickEN" class="tickGraphic" src="Icons/tick.svg"></p>
+			  <p class="selectionItem" ng-click="changeLanguage(1)">Francais<img ng-show="language.value == languages.Francais" ng-hide="language.value.index != languages.Francais.index" id="tickFR" class="tickGraphic" src="Icons/tick.svg"></p>
+			  <p class="selectionItem" ng-click="changeLanguage(2)">Deutsch<img ng-show="language.value == languages.Deutsch" ng-hide="language.value.index != languages.Deutsch.index" id="tickDE" class="tickGraphic" src="Icons/tick.svg"></p>
+			  <p class="selectionItem" ng-click="changeLanguage(3)">Español<img ng-show="language.value == languages.Espanol" ng-hide="language.value.index != languages.Espanol.index" id="tickES" class="tickGraphic" src="Icons/tick.svg"></p>
+			  <p class="selectionItem" ng-click="changeLanguage(4)">Português<img ng-show="language.value == languages.Portugues" ng-hide="language.value.index != languages.Portugues.index" id="tickPT" class="tickGraphic" src="Icons/tick.svg"></p>
+			  <p class="selectionItem" ng-click="changeLanguage(5)" id="tickITcontainer">Italiano<img ng-show="language.value == languages.Italiano" ng-hide="language.value.index != languages.Italiano.index" id="tickIT" class="tickGraphic" src="Icons/tick.svg"></p>
+			</div>
+		</div>
+		
+		<div style="text-align: left; color: gray; margin: 0"> <span class="selectionLabel">RESET</span>
+		<p class="settingsItem" id="resetToYear" ng-click="show.settings.resetToYear = true" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">Reset to Year-to-Year Countdown</p>
+		<p class="settingsItem" id="resetValues" ng-click="show.settings.resetValues = true" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">Reset All Countdown Values</p>
+		<p class="settingsItem" id="resetSettings" ng-click="show.settings.resetSettings = true" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">Reset Settings to Default</p>
+		</div>	
+		
+</div>
+
+<div id="confirmMessage" class="dialog" ng-show="show.settings.resetValues" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+			<div class="dialogTitle">Reset All Countdown Values?</div>
+	
+			<div class="dialogText">
+			This will reset the start date, end date, countdown name, end message and all milestone names and dates back to their default values. <br><br>Are you sure you want to do this?
+			<br>
+			</div>
+
+			<div id="noButton" ng-click="show.settings.resetValues = false" ng-class="{'dialogNoLight': theme.value == light, 'dialogNoDark': theme.value == dark}">No</div><div id="yesButton" ng-click="resetValues()" ng-class="{'dialogYesLight': theme.value == light, 'dialogYesDark': theme.value == dark}">Yes</div>
+</div>
+
+<div id="confirmMessageResetToYear" class="dialog" ng-show="show.settings.resetToYear" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+			<div class="dialogTitle">Reset Countdown to Empty Year-to-Year Countdown?</div>
+	
+			<div class="dialogText">
+			This will reset the countdown name, end message and all milestone names and dates back to their default values. It will also set the start date to 1st January this year and the end date to 1st January next year. <br><br>Are you sure you want to do this?
+			<br>
+			</div>
+
+			<div id="noButton" ng-click="show.settings.resetToYear = false" ng-class="{'dialogNoLight': theme.value == light, 'dialogNoDark': theme.value == dark}">No</div><div id="yesButton" ng-click="resetToYear()" ng-class="{'dialogYesLight': theme.value == light, 'dialogYesDark': theme.value == dark}">Yes</div>
+</div>
+
+<div id="confirmMessageResetSettings" class="dialog" ng-show="show.settings.resetSettings" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+
+			<div class="dialogTitle">Reset All Settings?</div>
+			
+			<div class="dialogText">
+			This will reset the time remaining format, milestone marker format, theme, backgrounds, and language back to their default values. <br><br>Are you sure you want to do this?
+			<br>
+			</div>
+
+			<div id="noButtonSettings" ng-click="show.settings.resetSettings = false" ng-class="{'dialogNoLight': theme.value == light, 'dialogNoDark': theme.value == dark}">No</div><div id="yesButtonSettings" ng-click="resetSettings()" ng-class="{'dialogYesLight': theme.value == light, 'dialogYesDark': theme.value == dark}">Yes</div>
+</div>
+
+<div id="backgroundSelectionPanel" ng-class="{'opacityFull': show.settings.backgrounds.dark || show.settings.backgrounds.light, 'lightModePanelBackground': theme.value == light, 'darkModePanelBackground': theme.value == dark, 'lightModeShadow': theme.value == light, 'darkModeShadow': theme.value == dark}">
+	  <div id="backgroundSelectionHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}"><span ng-if="show.settings.backgrounds.dark">Dark Mode Background</span><span ng-if="show.settings.backgrounds.light">Light Mode Background</span></div>
+	  <div id="backgroundSelectionContent" ng-class="{'lightModeText': theme.value == light, 'darkModeText': theme.value == dark}">
+		
+		<div class="row">
+			<div class="bgItem" ng-class="{selectedBg: show.settings.backgrounds.light && background.light == backgrounds.default || show.settings.backgrounds.dark && background.dark == backgrounds.default}" ng-click="changeBackground(backgrounds.default)">
+				<div id="defaultBackgroundThumbnail" ng-class="{'defaultBackgroundThumbnailDark': show.settings.backgrounds.dark, 'defaultBackgroundThumbnailLight': show.settings.backgrounds.light}"></div>
+				Default
+			</div>
+			<div class="bgItem" ng-class="{selectedBg: show.settings.backgrounds.light && background.light == backgrounds.boatHouse || show.settings.backgrounds.dark && background.dark == backgrounds.boatHouse}" ng-click="changeBackground(backgrounds.boatHouse)">
+				<img ng-src="{{backgrounds.boatHouse}}" class="backgroundThumnail" />
+				Boat House
+			</div>
+		</div>
+		<div class="row">
+		   	<div class="bgItem" ng-class="{selectedBg: show.settings.backgrounds.light && background.light == backgrounds.oldBuilding || show.settings.backgrounds.dark && background.dark == backgrounds.oldBuilding}" ng-click="changeBackground(backgrounds.oldBuilding)">
+				<img ng-src="{{backgrounds.oldBuilding}}" class="backgroundThumnail" />
+				Old Building
+			</div>
+			<div class="bgItem" ng-class="{selectedBg: show.settings.backgrounds.light && background.light == backgrounds.londonEye || show.settings.backgrounds.dark && background.dark == backgrounds.londonEye}" ng-click="changeBackground(backgrounds.londonEye)">
+				<img ng-src="{{backgrounds.londonEye}}" class="backgroundThumnail" />
+				London Eye
+			</div>
+		</div>
+		<div class="row">
+			<div class="bgItem" ng-class="{selectedBg: show.settings.backgrounds.light && background.light == backgrounds.canal || show.settings.backgrounds.dark && background.dark == backgrounds.canal}" ng-click="changeBackground(backgrounds.canal)">
+				<img ng-src="{{backgrounds.canal}}" class="backgroundThumnail" />
+				Canal
+			</div>
+			<div class="bgItem" ng-class="{selectedBg: show.settings.backgrounds.light && background.light == backgrounds.skiResort || show.settings.backgrounds.dark && background.dark == backgrounds.skiResort}" ng-click="changeBackground(backgrounds.skiResort)">
+				<img ng-src="{{backgrounds.skiResort}}" class="backgroundThumnail" />
+				Ski Resort
+			</div>
+		</div>
+		<div class="row">
+			<div class="bgItem" ng-class="{selectedBg: show.settings.backgrounds.light && background.light == backgrounds.houses || show.settings.backgrounds.dark && background.dark == backgrounds.houses}" ng-click="changeBackground(backgrounds.houses)">
+				<img ng-src="{{backgrounds.houses}}" class="backgroundThumnail" />
+				Houses
+			</div>
+			<div class="bgItem" ng-class="{selectedBg: show.settings.backgrounds.light && background.light == backgrounds.custom || show.settings.backgrounds.dark && background.dark == backgrounds.custom}" id="backgroundCustomOption">
+				<img ng-src="{{customBackgroundImage.value.length == 0 ? customBgThumbnailPlaceholder : customBackgroundImage.value}}" ng-click="customBackgroundImage.value.length == 0 ? angular.noop() : changeBackground(backgrounds.custom)" class="backgroundThumnail" />
+				<div id="imageURLOverlayUI">
+					<input type="text" placeholder="Image URL..." name="customBackground" id="customBackground" ng-model="customBackgroundImage.value" /> <span id="setCustomBackground" ng-click="customBackgroundImage.value.length == 0 ? angular.noop() : changeBackground(backgrounds.custom)">Set</span>
+				</div>
+			</div>
+		</div>
+	  </div>
+</div>
+
+
+</div>
+
+
+
+<div id="statusBarController" ng-controller="statusbar-controller">
+	<div id="statusBar" ng-click="show.statusBarDialog = true">{{statusBarText.value}}</div>
+	<div id="statusBarDialog" ng-show="show.statusBarDialog == true" class="dialog" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+		<div id="statusBarTitle" class="dialogTitle">{{phrases.value.statusBarMessage}}</div>
+		
+		<div id="statusBarText" class="dialogText">
+		{{statusBarText.value}}
+		</div>
+	
+		<div id="closeInfoStatusBar" ng-click="show.statusBarDialog = false" class="dialogClose" ng-class="{'lightModeDialogButton': theme.value == light, 'darkModeDialogButton': theme.value == dark}">Close</div>
+	</div>
+</div>
+
+
+
+<div id="countdownsList" ng-controller="countdown-list-controller">
+	<div id="countdownsMenuIcon" ng-class="{'countdownsMenuIconLight': theme.value == light, 'countdownsMenuIconDark': theme.value == dark}" ng-click="show.countdownList.window = true; show.milestoneCountdowns = false">
+		<div class="hamburgerMenuLine"></div>
+		<div class="hamburgerMenuLine"></div>
+		<div class="hamburgerMenuLine"></div>
+	</div>
+	<div id="countdownsMenu" ng-class="{'countdownsMenuShow': show.countdownList.window, 'countdownsMenuHide': show.countdownList.window == false, 'lightModePanelBackground': theme.value == light, 'darkModePanelBackground': theme.value == dark, 'darkModeShadowCountdowns': theme.value == dark, 'lightModeShadowCountdowns': theme.value == light}">
+		<div id="countdownsMenuHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}"><p><img ng-src="{{countdowns.length<10 ? plus : plusDisabled}}" id="addCountdownButton" ng-click="show.countdownList.add = !show.countdownList.add" /> All Countdowns <span id="allCountdownsDoneButton" ng-click="show.countdownList.window = false;show.countdownList.add = false">Done</span></p></div>
+		
+		<div id="addCountdownOptionsContainer" ng-show="show.countdownList.add && countdowns.length<10" ng-class="{'opacityFull': show.countdownList.add, 'lightModeListDialogBackground': theme.value == light, 'darkModeListDialogBackground': theme.value == dark}">
+			<div id="addCountdownOptionsContent" ng-class="{'lightModeText': theme.value == light, 'darkModeText': theme.value == dark}">
+				<p class="selectionItem" ng-click="addCountdown();show.countdownList.add = false">Add New Countdown</p>
+				<p class="selectionItem" ng-click="show.importCountdown.window = true;show.countdownList.add = false" id="addCountdownImportOption">Import Existing Countdown</p>
+			</div>
+		</div>
+		
+		<p class="countdownListItem" ng-class="{'countdownListItemLight': theme.value == light, 'countdownListItemDark': theme.value == dark, 'countdownListItemSelected': currentCD.index == $index}" ng-repeat="i in countdowns track by $index" id="countdown{{$index}}" ng-click="switchCountdown($index)">{{i.name}} <span ng-if="i.name == ''">Countdown {{$index+1}}</span> <span ng-if="countdowns.length > 1" ng-click="show.countdownList.confirmDelete = true;countdownToDelete.index = $index"><img class="crossButtonCountdownList" src="Icons/crossButton.svg" /></span></p>
+	</div>
+	
+	<div id="confirmDeleteDialog" ng-show="show.countdownList.confirmDelete" class="dialog" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+		
+		<div class="dialogTitle">Delete Countdown?</div>
+		
+		<div class="dialogText">
+		This will permanently delete the countdown. Click Yes to confirm or No to cancel.
+		<br>
+		</div>
+	
+		<div id="noButtonDeleteDialog" ng-click="show.countdownList.confirmDelete = false" ng-class="{'dialogNoLight': theme.value == light, 'dialogNoDark': theme.value == dark}">No</div><div id="yesButtonDeleteDialog" ng-click="deleteCountdown()" ng-class="{'dialogYesLight': theme.value == light, 'dialogYesDark': theme.value == dark}">Yes</div>
+	</div>
+	
+<div id="importWindow" ng-class="{'opacityFull': show.importCountdown.window, 'lightModePanelBackground': theme.value == light, 'darkModePanelBackground': theme.value == dark}">
+	<div id="importWindowHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}">Import Countdown <span id="doneButtonImport" ng-click="show.importCountdown.window = false">Done</span></div>
+	<p ng-class="{'lightModeText': theme.value == light, 'darkModeText': theme.value == dark}">Paste exported countdown text below:</p>
+	<div id="importTextContent" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}"> <textarea ng-class="{'lightModeText': theme.value == light, 'darkModeText': theme.value == dark}" ng-model="importCountdownText.value"></textarea> </div>
+	<p class="settingsItem" id="importCountdown" ng-click="importCountdown()" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">Import Countdown</p>
+</div>
+
+<div id="importErrorDialog" class="dialog" ng-show="show.importCountdown.error" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+	<div id="importErrorDialogTitle" class="dialogTitle">Countdown Text Invalid</div>
+	<p class="errorText">{{importError.value}}</p>
+	<div id="okButtonImportErrorDialog" class="closeInfo" ng-class="{'lightModeDialogButton': theme.value == light, 'darkModeDialogButton': theme.value == dark}" ng-click="show.importCountdown.error = false">OK</div>
+</div>
+
+<div id="importValueErrorDialog" class="dialog" ng-show="show.importCountdown.valueErrors" ng-class="{'lightModeBackground': theme.value == light, 'darkModeBackground': theme.value == dark}">
+	<div id="importValueErrorDialogTitle" class="dialogTitle">Invalid Values in Countdown Text</div>
+	<div id="importValueErrorDialogText" class="dialogText">The countdown text has the correct fields, however some values are invalid:</div>
+	<div id="importValueErrorList">
+		<p class="errorText" ng-repeat="message in importValueErrors.messages"> * {{message.text}}</p>
+	</div>
+	<div id="okButtonImportValueErrorDialog" class="closeInfo" ng-class="{'lightModeDialogButton': theme.value == light, 'darkModeDialogButton': theme.value == dark}" ng-click="show.importCountdown.valueErrors = false">OK</div>
+</div>
+	
+</div>
+
+
+<div id="milestoneCountdowns" ng-class="{'milestoneCountdownsLight': theme.value == light, 'milestoneCountdownsDark': theme.value == dark}" ng-controller="milestone-countdowns-controller" ng-show="show.milestoneCountdowns">
+	<div id="milestoneCountdownsHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}"> {{phrases.value.milestoneCountdowns}} <span id="milestoneCountdownsDoneButton" ng-click="show.milestoneCountdowns = false">Done</span></div>
+   	<div id="milestoneCountdownsContent" ng-class="{'milestoneCountdownsContentLight': theme.value == light, 'milestoneCountdownsContentDark': theme.value == dark}">
+		<div id="NoMilestonesText" ng-show="countdowns[currentCD.index].milestones.length == 0">No Milestones</div>
+		<span ng-repeat="milestone in countdowns[currentCD.index].milestones track by $index" id="milestone{{$index}}Countdown">
+	   		<div id="milestone{{$index}}Name" class="milestoneName"></div>
+	   		<div id="daysUntilMilestone{{$index}}" class="daysUntilMilestone"></div>
+	   		<div id="milestone{{$index}}ProgressBar" class="milestoneProgressBars"></div>
+		</span>
+   	</div>
+</div>
+
+
+<div id="progressBar" ng-controller="progressbar-controller">
+	<div id="daysRemaining" ng-class="{'timeRemainingLight': theme.value == light, 'timeRemainingDark': theme.value == dark}" ng-click="showMilestoneCountdowns()">{{countdownTimeRemainingText.value}}<img id="downArrow" src="Icons/downArrow.svg"></div>
+
+	<div id="outerProgressBar" ng-class="{'outerProgressBarLight': theme.value == light, 'outerProgressBarDark': theme.value == dark}">
+		<div id="innerProgressBar" ng-class="{'innerProgressBarLight': theme.value == light, 'innerProgressBarDark': theme.value == dark, 'blueBar': reachedMilestone.value && !countdownEnded.value, 'greenBar': countdownEnded.value}"></div>
+
+		<div id="progressLabel">{{percentageLabel.value}}%</div>
+		<div id="milestoneMarker0" class="milestoneMarker"></div>
+		<div id="milestoneMarker1" class="milestoneMarker"></div>
+		<div id="milestoneMarker2" class="milestoneMarker"></div>
+		<div id="milestoneMarker3" class="milestoneMarker"></div>
+		<div id="milestoneMarker4" class="milestoneMarker"></div>
+		<div id="milestoneMarker5" class="milestoneMarker"></div>
+		<div id="milestoneMarker6" class="milestoneMarker"></div>
+		<div id="milestoneMarker7" class="milestoneMarker"></div>
+		<div id="milestoneMarker8" class="milestoneMarker"></div>
+		<div id="milestoneMarker9" class="milestoneMarker"></div>
+
+		<div id="milestoneLabel0" class="milestoneLabel extraMilestones" ng-click="selectMilestone(0)"></div>
+		<div id="milestoneLabel1" class="milestoneLabel extraMilestones" ng-click="selectMilestone(1)"></div>
+		<div id="milestoneLabel2" class="milestoneLabel extraMilestones" ng-click="selectMilestone(2)"></div>
+		<div id="milestoneLabel3" class="milestoneLabel extraMilestones" ng-click="selectMilestone(3)"></div>
+		<div id="milestoneLabel4" class="milestoneLabel extraMilestones" ng-click="selectMilestone(4)"></div>
+		<div id="milestoneLabel5" class="milestoneLabel extraMilestones" ng-click="selectMilestone(5)"></div>
+		<div id="milestoneLabel6" class="milestoneLabel extraMilestones" ng-click="selectMilestone(6)"></div>
+		<div id="milestoneLabel7" class="milestoneLabel extraMilestones" ng-click="selectMilestone(7)"></div>
+		<div id="milestoneLabel8" class="milestoneLabel extraMilestones" ng-click="selectMilestone(8)"></div>
+		<div id="milestoneLabel9" class="milestoneLabel extraMilestones" ng-click="selectMilestone(9)"></div>
+	</div>
+</div>
+
+
+
+<br>
+
+<img src="Icons/configure.svg" id="setupButton" ng-click="show.configure.window = true; show.milestoneCountdowns = false" />
+
+
+
+</div>
+
+</body>
+
+</html>

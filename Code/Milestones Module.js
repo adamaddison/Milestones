@@ -1,0 +1,1 @@
+var milestonesModule = angular.module("milestonesModule", []);
