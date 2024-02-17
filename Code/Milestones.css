@@ -465,7 +465,10 @@ body{ font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-siz
 	transform: translate(-19px);
 	-webkit-transition: top 0.2s ease-out;
 	transition: top 0.2s ease-out;
-	white-space: nowrap
+	white-space: nowrap;
+	max-width: 120px;
+	min-width: 20px;
+	overflow-x: scroll
 }
 
 .milestoneLabel:hover
@@ -839,6 +842,11 @@ input
 	overflow-y: scroll
 }
 
+.errorListUL
+{
+	padding-left: 14px
+}
+
 .errorText
 {
 	font-size: 10pt;
@@ -1201,7 +1209,7 @@ input
 	text-align: center
 }
 
-#markerDateOption, #monthAndDaysOption, #addCountdownImportOption
+#markerNameOption, #monthAndDaysOption, #addCountdownImportOption
 {
 	border-bottom: 0px
 }
