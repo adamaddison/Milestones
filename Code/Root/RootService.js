@@ -38,14 +38,10 @@ this.countdowns =
 		milestones: [{ name: "new milestone", date: new Date() }]
 	}
 ];
-this.countdowns[0].endDate.setUTCHours(0, 0, 0, 0);
-this.countdowns[0].endDate.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 10);
+this.countdowns[0].endDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 10) );
+this.countdowns[0].startDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
+this.countdowns[0].milestones[0].date = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 
-this.countdowns[0].startDate.setUTCHours(0, 0, 0, 0);
-this.countdowns[0].startDate.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-
-this.countdowns[0].milestones[0].date.setUTCHours(0, 0, 0, 0);
-this.countdowns[0].milestones[0].date.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
 if(localStorage.countdowns !== undefined)
 {
 	this.countdowns = JSON.parse(localStorage.countdowns);
@@ -54,17 +50,14 @@ if(localStorage.countdowns !== undefined)
 	for(var i=0;i<this.countdowns.length;i++)
 	{
 		this.countdowns[i].startDate = new Date(this.countdowns[i].startDate);
-		this.countdowns[i].startDate.setUTCHours(0, 0, 0, 0);
-		this.countdowns[i].startDate.setFullYear(new Date(this.countdowns[i].startDate).getFullYear(), new Date(this.countdowns[i].startDate).getMonth(), new Date(this.countdowns[i].startDate).getDate());
+		this.countdowns[i].startDate = new Date( Date.UTC(new Date(this.countdowns[i].startDate).getFullYear(), new Date(this.countdowns[i].startDate).getMonth(), new Date(this.countdowns[i].startDate).getDate()) );
 		this.countdowns[i].endDate = new Date(this.countdowns[i].endDate);
-		this.countdowns[i].endDate.setUTCHours(0, 0, 0, 0);
-		this.countdowns[i].endDate.setFullYear(new Date(this.countdowns[i].endDate).getFullYear(), new Date(this.countdowns[i].endDate).getMonth(), new Date(this.countdowns[i].endDate).getDate());
+		this.countdowns[i].endDate = new Date( Date.UTC(new Date(this.countdowns[i].endDate).getFullYear(), new Date(this.countdowns[i].endDate).getMonth(), new Date(this.countdowns[i].endDate).getDate()) );
 		
 		for(var j=0;j<this.countdowns[i].milestones.length;j++)
 		{
 			this.countdowns[i].milestones[j].date = new Date(this.countdowns[i].milestones[j].date);
-			this.countdowns[i].milestones[j].date.setUTCHours(0, 0, 0, 0);
-			this.countdowns[i].milestones[j].date.setFullYear(new Date(this.countdowns[i].milestones[j].date).getFullYear(), new Date(this.countdowns[i].milestones[j].date).getMonth(), new Date(this.countdowns[i].milestones[j].date).getDate());
+			this.countdowns[i].milestones[j].date = new Date( Date.UTC(new Date(this.countdowns[i].milestones[j].date).getFullYear(), new Date(this.countdowns[i].milestones[j].date).getMonth(), new Date(this.countdowns[i].milestones[j].date).getDate()) );
 		}
 	}
 }
@@ -93,19 +86,17 @@ this.importCountdown = function()
 	{
 		// Parsing JSON text and converting date fields from string to date type
 		var newCountdown = JSON.parse(this.importCountdownText.value);
+		
 		newCountdown.startDate = new Date(newCountdown.startDate);
-		  newCountdown.startDate.setUTCHours(0, 0, 0, 0);
-		  newCountdown.startDate.setFullYear( new Date(JSON.parse(this.importCountdownText.value).startDate).getFullYear(), new Date(JSON.parse(this.importCountdownText.value).startDate).getMonth(), new Date(JSON.parse(this.importCountdownText.value).startDate).getDate() );
+		  newCountdown.startDate = new Date( Date.UTC(new Date(JSON.parse(this.importCountdownText.value).startDate).getFullYear(), new Date(JSON.parse(this.importCountdownText.value).startDate).getMonth(), new Date(JSON.parse(this.importCountdownText.value).startDate).getDate()) );
 		
 		newCountdown.endDate = new Date(newCountdown.endDate);
-		  newCountdown.endDate.setUTCHours(0, 0, 0, 0);
-		  newCountdown.endDate.setFullYear( new Date(JSON.parse(this.importCountdownText.value).endDate).getFullYear(), new Date(JSON.parse(this.importCountdownText.value).endDate).getMonth(), new Date(JSON.parse(this.importCountdownText.value).endDate).getDate() );
+		  newCountdown.endDate = new Date( Date.UTC(new Date(JSON.parse(this.importCountdownText.value).endDate).getFullYear(), new Date(JSON.parse(this.importCountdownText.value).endDate).getMonth(), new Date(JSON.parse(this.importCountdownText.value).endDate).getDate()) );
 		
 		for(var i=0;i<newCountdown.milestones.length;i++)
 		{
 			newCountdown.milestones[i].date = new Date(newCountdown.milestones[i].date);
-			newCountdown.milestones[i].date.setUTCHours(0, 0, 0, 0);
-			newCountdown.milestones[i].date.setFullYear( new Date(JSON.parse(this.importCountdownText.value).milestones[i].date).getFullYear(), new Date(JSON.parse(this.importCountdownText.value).milestones[i].date).getMonth(), new Date(JSON.parse(this.importCountdownText.value).milestones[i].date).getDate() );
+			newCountdown.milestones[i].date = new Date( Date.UTC(new Date(JSON.parse(this.importCountdownText.value).milestones[i].date).getFullYear(), new Date(JSON.parse(this.importCountdownText.value).milestones[i].date).getMonth(), new Date(JSON.parse(this.importCountdownText.value).milestones[i].date).getDate()) );
 		}
 		
 		this.countdowns.push(newCountdown);
@@ -248,16 +239,13 @@ this.importedCountdownValuesValid = function()
 	
 	// Creating date variables used to check validity of input
 	var startDate = new Date(importAsJSON.startDate);
-	startDate.setUTCHours(0, 0, 0, 0);
-	startDate.setFullYear( new Date(importAsJSON.startDate).getFullYear(), new Date(importAsJSON.startDate).getMonth(), new Date(importAsJSON.startDate).getDate() );
+	startDate = new Date( Date.UTC(new Date(importAsJSON.startDate).getFullYear(), new Date(importAsJSON.startDate).getMonth(), new Date(importAsJSON.startDate).getDate()) );
 	
 	var endDate = new Date(importAsJSON.endDate);
-	endDate.setUTCHours(0, 0, 0, 0);
-	endDate.setFullYear( new Date(importAsJSON.endDate).getFullYear(), new Date(importAsJSON.endDate).getMonth(), new Date(importAsJSON.endDate).getDate() );
+	endDate = new Date( Date.UTC(new Date(importAsJSON.endDate).getFullYear(), new Date(importAsJSON.endDate).getMonth(), new Date(importAsJSON.endDate).getDate()) );
 	
 	var currentDate = new Date();
-	currentDate.setUTCHours(0, 0, 0, 0);
-	currentDate.setFullYear( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() );
+	currentDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	
 	var startDatePlus5000Days = new Date(startDate);
 	startDatePlus5000Days.setDate(startDatePlus5000Days.getDate() + 5000);
@@ -277,33 +265,32 @@ this.importedCountdownValuesValid = function()
 	if( !(endDate > startDate) )
 	{
 		isValid = false;
-		this.importValueErrors.messages.push({ text: "The end date must come after the start date."});
+		this.importValueErrors.messages.push({ text: "The end date (" + endDate.toDateString() + ") must come after the start date (" + startDate.toDateString() + ")."});
 	}
 	
 	if( !(endDate <= startDatePlus5000Days) )
 	{
 		isValid = false;
-		this.importValueErrors.messages.push({ text: "The end date cannot be more than 5000 days after the start date."});
+		this.importValueErrors.messages.push({ text: "The end date (" + endDate.toDateString() + ") cannot be more than 5000 days after the start date (" + startDate.toDateString() + ")."});
 	}
 	
 	// Checking the validity of date and name properties of each milestone
 	for(var i=0;i<importAsJSON.milestones.length;i++)
 	{
 		var milestoneDate = new Date(importAsJSON.milestones[i].date);
-		  milestoneDate.setUTCHours(0, 0, 0, 0);
-		  milestoneDate.setFullYear( new Date(importAsJSON.milestones[i].date).getFullYear(), new Date(importAsJSON.milestones[i].date).getMonth(), new Date(importAsJSON.milestones[i].date).getDate() );
+		    milestoneDate = new Date( Date.UTC(new Date(importAsJSON.milestones[i].date).getFullYear(), new Date(importAsJSON.milestones[i].date).getMonth(), new Date(importAsJSON.milestones[i].date).getDate()) );
 		var milestoneName = importAsJSON.milestones[i].name;
 		
 		if( !(milestoneDate >= startDate) )
 		{
 			isValid = false;
-			this.importValueErrors.messages.push({ text: "Milestone '" + milestoneName + "' date cannot be before start date."});
+			this.importValueErrors.messages.push({ text: "Milestone '" + milestoneName + "' date (" + milestoneDate.toDateString() + ") cannot be before start date (" + startDate.toDateString() + ")."});
 		}
 		
 		if( !(milestoneDate <= endDate) && (endDate > startDate) ) // Error message not shown if end <= start as it would be redundant
 		{
 			isValid = false;
-			this.importValueErrors.messages.push({ text: "Milestone '" + milestoneName + "' date cannot be after the end date."});
+			this.importValueErrors.messages.push({ text: "Milestone '" + milestoneName + "' date (" + milestoneDate.toDateString() + ") cannot be after the end date (" + endDate.toDateString() + ")."});
 		}
 		
 		if( !(milestoneName.length <= 100) )
@@ -318,13 +305,13 @@ this.importedCountdownValuesValid = function()
 	if( !(startDate <= currentDate) )
 	{
 		isValid = false;
-		this.importValueErrors.messages.push({ text: "The start date cannot come after the current date."});
+		this.importValueErrors.messages.push({ text: "The start date (" + startDate.toDateString() + ") cannot come after the current date."});
 	}
 	
 	if( !(startDate >= currentDateMinus5000Days) )
 	{
 		isValid = false;
-		this.importValueErrors.messages.push({ text: "The start date cannot be more than 5000 days ago."});
+		this.importValueErrors.messages.push({ text: "The start date (" + startDate.toDateString() + ") cannot be more than 5000 days ago."});
 	}
 	
 	if( !(countdownName.length <= 60) )
