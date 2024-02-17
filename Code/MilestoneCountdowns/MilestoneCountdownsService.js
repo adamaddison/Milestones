@@ -9,8 +9,7 @@ this.calculateMilestoneCountdowns = function()
 	var startDate = this.countdowns[this.currentCD.index].startDate;
 	var endDate = this.countdowns[this.currentCD.index].endDate;
 	var currentDate = new Date();
-	currentDate.setUTCHours(0, 0, 0, 0);
-	currentDate.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+	currentDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	
 	var milestones = this.countdowns[this.currentCD.index].milestones;
 	
