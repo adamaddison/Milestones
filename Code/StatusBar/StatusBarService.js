@@ -9,8 +9,7 @@ this.statusBarText = { value: "" };
 this.calculateStatusBarText = function(index = -1)
 {
 	var currentDate = new Date();
-	currentDate.setUTCHours(0, 0, 0, 0);
-	currentDate.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+	currentDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	
 	var milestones = this.countdowns[this.currentCD.index].milestones;
 	
@@ -57,13 +56,28 @@ this.calculateStatusBarText = function(index = -1)
 			this.statusBarText.value = this.statusBarText.value + " - " + daysUntilMilestone + " " + (daysUntilMilestone == 1 ? SettingsService.phrases.value.Day : SettingsService.phrases.value.Days) + " " +SettingsService.phrases.value.remainingUntil + " " + nextSoonestMilestoneName
 		}
 		
-		// If the progress bar is at a milestone then that is indicated in the status bar text
+		
+		// If the progress bar has reached a milestone(s) then that is indicated in the status bar text
+		var numOfMilestonesCompletedToday = 0;
+		var milestoneCompletedMessage = "";
 		for(var i=0;i<milestones.length;i++)
 		{	
 			if(milestones[i].date.getTime() == currentDate.getTime())
 			{
-				this.statusBarText.value = this.statusBarText.value + " - " + milestones[i].name + " " + SettingsService.phrases.value.Completed;
+				numOfMilestonesCompletedToday += 1;
+				milestoneCompletedMessage = " - " + milestones[i].name + " " + SettingsService.phrases.value.Completed;
 			}
+		}
+		
+		// If 1 milestone completed today then text is added to the status bar saying <milestone name> Completed
+		if(numOfMilestonesCompletedToday == 1)
+		{
+			this.statusBarText.value = this.statusBarText.value + milestoneCompletedMessage;
+		}
+		// If multiple milestones completed today text is added to the status bar saying X Milestones Completed Today
+		else if(numOfMilestonesCompletedToday > 1)
+		{
+			this.statusBarText.value = this.statusBarText.value + " - " + numOfMilestonesCompletedToday + " " + SettingsService.phrases.value.milestonesCompletedToday;
 		}
 	}
 	// If a milestone is selected then days until selected milestone is displayed
