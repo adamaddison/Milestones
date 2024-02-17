@@ -17,7 +17,7 @@ this.calculateMilestoneLabel = function(index)
 	var milestoneDate = this.countdowns[this.currentCD.index].milestones[index].date;
 	
 	// By default each milestone marker on the progress bar will display X% (percentage until end date)
-	if(SettingsService.format.marker.index == SettingsService.formats.marker.percentage.index && endDate > startDate)
+	if(SettingsService.markerIsPercentage() && endDate > startDate)
 	{	
 		// Calculating the milestone percentage and rounding it to one decimal point for presentation
 		var milestonePercentage = ((milestoneDate - startDate) / (endDate - startDate)) * 100;
@@ -26,14 +26,27 @@ this.calculateMilestoneLabel = function(index)
 		return (milestonePercentage + "%");
 	}
 	// If the user has set the format to day number then each milestone marker will display Day X
-	else if(SettingsService.format.marker.index == SettingsService.formats.marker.number.index)
+	else if(SettingsService.markerIsNumber())
 	{
 		return SettingsService.phrases.value.Day + " " + (milestoneDate - startDate)/86400000;
 	}
 	// If the user has set the format to date then each milestone marker will display the date the milestone is reached
-	else if(SettingsService.format.marker.index == SettingsService.formats.marker.date.index)
+	else if(SettingsService.markerIsDate())
 	{	
 		return (milestoneDate.getDate() + "/" + (milestoneDate.getMonth()+1) + "/" + milestoneDate.getFullYear());
+	}
+	// If the user has set the format to name then each milestone marker will display the milestone name
+	else if(SettingsService.markerIsName())
+	{
+		// If milestone name is empty return milestone X instead of empty string
+		if(this.countdowns[this.currentCD.index].milestones[index].name.length == 0)
+		{
+			return "milestone " + (index + 1);
+		}
+		else
+		{
+			return this.countdowns[this.currentCD.index].milestones[index].name;
+		}
 	}
 	
 	// If non of the above values are provided then the day number is used by default in order to prevent a divide by zero error if endDate == startDate
@@ -76,8 +89,7 @@ this.calculateTimeRemainingText = function()
 	var startDate = this.countdowns[this.currentCD.index].startDate;
 	var endDate = this.countdowns[this.currentCD.index].endDate;
 	var currentDate = new Date();
-	currentDate.setUTCHours(0, 0, 0, 0);
-	currentDate.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+	currentDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 
 	var countdown = this.countdowns[this.currentCD.index];
 	var remainingDays = (endDate - currentDate)/86400000;
@@ -91,17 +103,17 @@ this.calculateTimeRemainingText = function()
 	else
 	{
 		// Calculating remaining DAYS until end date
-		if(SettingsService.format.time.index == SettingsService.formats.time.days.index)
+		if(SettingsService.timeIsDays())
 		{	
 			this.countdownTimeRemainingText.value = this.calculateDaysRemainingText(remainingDays);
 		}
 		// Calculating remaining WEEKS and DAYS until end date
-		else if(SettingsService.format.time.index == SettingsService.formats.time.weeks.index)
+		else if(SettingsService.timeIsWeeks())
 		{
 			this.countdownTimeRemainingText.value = this.calculateWeeksRemainingText(remainingDays);
 		}
 		// Calculating remaining MONTHS WEEKS and DAYS until end date
-		else if(SettingsService.format.time.index == SettingsService.formats.time.months.index)
+		else if(SettingsService.timeIsMonths())
 		{
 			if(remainingDays < 30)
 			{
@@ -130,7 +142,7 @@ this.calculateTimeRemainingText = function()
 			}
 		}
 		// Calculating remaining MONTHS and DAYS until end date
-		else if(SettingsService.format.time.index == SettingsService.formats.time.monthsdays.index)
+		else if(SettingsService.timeIsMonthDays())
 		{
 			if(remainingDays < 30)
 			{
@@ -176,8 +188,7 @@ this.calculateCountdownDisplay = function()
 	var endDate = this.countdowns[this.currentCD.index].endDate;
 	var currentDate = new Date();
 	console.log(currentDate.toUTCString());
-	currentDate.setUTCHours(0, 0, 0, 0);
-	currentDate.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+	currentDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	console.log(currentDate.toUTCString());
 	
 	// Calculating progress bar length and percentage label
