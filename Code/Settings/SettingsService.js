@@ -29,7 +29,8 @@ var englishPhrases =
 	Completed: "Completed",
 	sinceStart: "since start",
 	milestoneCountdowns: "Milestone Countdowns",
-	statusBarMessage: "Status Bar Message"
+	statusBarMessage: "Status Bar Message",
+	milestonesCompletedToday: "Milestones Completed Today"
 }
 var frenchPhrases = 
 {
@@ -43,8 +44,9 @@ var frenchPhrases =
 	remainingUntil: "Restant Jusqu'à",
 	Completed: "Terminé",
 	sinceStart: "depuis le début",
-	milestoneCountdowns: "Comptes à rebours d’étape",
-	statusBarMessage: "Message de la Barre d'État"
+	milestoneCountdowns: "Comptes à rebours d'jalon",
+	statusBarMessage: "Message de la Barre d'État",
+	milestonesCompletedToday: "Jalons Terminées Aujourd'hui"
 }
 var germanPhrases = 
 {
@@ -59,7 +61,8 @@ var germanPhrases =
 	Completed: "Abgeschlossen",
 	sinceStart: "seit dem start",
 	milestoneCountdowns: "Meilenstein Countdowns",
-	statusBarMessage: "Statusleiste Meldung"
+	statusBarMessage: "Statusleiste Meldung",
+	milestonesCompletedToday: "Meilensteine Heute Abgeschlossen"
 }
 var spanishPhrases = 
 {
@@ -74,7 +77,8 @@ var spanishPhrases =
 	Completed: "Terminado",
 	sinceStart: "desde el comienzo",
 	milestoneCountdowns: "Cuenta atrás de hitos",
-	statusBarMessage: "Mensaje de la Barra de Estado"
+	statusBarMessage: "Mensaje de la Barra de Estado",
+	milestonesCompletedToday: "Hitos Terminado Hoy"
 }
 var portuguesePhrases = 
 {
@@ -86,10 +90,11 @@ var portuguesePhrases =
 	Month: "Mês",
 	Remaining: "Restantes",
 	remainingUntil: "Restantes até",
-	Completed: "Completado",
+	Completed: "Concluído",
 	sinceStart: "desde o começo",
 	milestoneCountdowns: "Contagem regressiva de marco",
-	statusBarMessage: "Mensagem da Barra de Status"
+	statusBarMessage: "Mensagem da Barra de Status",
+	milestonesCompletedToday: "Marcos Concluídos Hoje"
 }
 var italianPhrases = 
 {
@@ -104,7 +109,8 @@ var italianPhrases =
 	Completed: "Completato",
 	sinceStart: "dall'inizio",
 	milestoneCountdowns: "Conto alla rovescia pietra miliare",
-	statusBarMessage: "Messaggio Nella Barra di Stato"
+	statusBarMessage: "Messaggio Nella Barra di Stato",
+	milestonesCompletedToday: "Pietra Miliares Completati Oggi"
 }
 
 // Initialising the phrases object to the correct language (this is used to display the same messages in the selected language)
@@ -149,7 +155,8 @@ this.formats =
 	{
 		percentage: {index: 0, text: "Percentage"},
 		number: {index: 1, text: "Day Number"},
-		date: {index: 2, text: "Date"}
+		date: {index: 2, text: "Date"},
+		name: {index: 3, text: "Name"}
 	}
 };
 this.format =
@@ -334,9 +341,10 @@ this.resetSettings = function()
 	this.format.marker = this.formats.marker.percentage;
 	this.background.light = this.backgrounds.default;
 	this.background.dark = this.backgrounds.default;
+	this.customBackgroundImage.value = "";
 	this.theme.value = this.light;
 	this.autoThemeSetting.value = false;
-	this.language.value = this.languages.English;
+	this.changeLanguage(this.languages.English.index);
 	
 	this.saveSettings(false);
 	
@@ -349,12 +357,10 @@ this.resetSettings = function()
 this.resetValues = function()
 {
 	this.countdowns[this.currentCD.index].startDate = new Date();
-	this.countdowns[this.currentCD.index].startDate.setUTCHours(0, 0, 0, 0);
-	this.countdowns[this.currentCD.index].startDate.setFullYear( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() );
+	this.countdowns[this.currentCD.index].startDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	
 	this.countdowns[this.currentCD.index].endDate = new Date();
-	this.countdowns[this.currentCD.index].endDate.setUTCHours(0, 0, 0, 0);
-	this.countdowns[this.currentCD.index].endDate.setFullYear( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 10 );
+	this.countdowns[this.currentCD.index].endDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 10) );
 	
 	this.countdowns[this.currentCD.index].name = "";
 	this.countdowns[this.currentCD.index].endMessage = "";
@@ -365,8 +371,7 @@ this.resetValues = function()
 		this.countdowns[this.currentCD.index].milestones[i].name = "new milestone";
 		
 		this.countdowns[this.currentCD.index].milestones[i].date = new Date();
-		this.countdowns[this.currentCD.index].milestones[i].date.setUTCHours(0, 0, 0, 0);
-		this.countdowns[this.currentCD.index].milestones[i].date.setFullYear( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() );
+		this.countdowns[this.currentCD.index].milestones[i].date = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	}
 }
 
@@ -374,16 +379,13 @@ this.resetValues = function()
 this.resetToYear = function()
 {
 	var currentDate = new Date();
-	currentDate.setUTCHours(0, 0, 0, 0);
-	currentDate.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+	currentDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	
 	this.countdowns[this.currentCD.index].startDate = new Date();
-	this.countdowns[this.currentCD.index].startDate.setUTCHours(0, 0, 0, 0);
-	this.countdowns[this.currentCD.index].startDate.setFullYear(currentDate.getFullYear(), 0, 1);
+	this.countdowns[this.currentCD.index].startDate = new Date( Date.UTC(currentDate.getFullYear(), 0, 1) );
 	
 	this.countdowns[this.currentCD.index].endDate = new Date();
-	this.countdowns[this.currentCD.index].endDate.setUTCHours(0, 0, 0, 0);
-	this.countdowns[this.currentCD.index].endDate.setFullYear(currentDate.getFullYear()+1, 0, 1);
+	this.countdowns[this.currentCD.index].endDate = new Date( Date.UTC(currentDate.getFullYear()+1, 0, 1) );
 	
 	this.countdowns[this.currentCD.index].name = "";
 	this.countdowns[this.currentCD.index].endMessage = "";
@@ -394,9 +396,43 @@ this.resetToYear = function()
 		this.countdowns[this.currentCD.index].milestones[i].name = "new milestone";
 		
 		this.countdowns[this.currentCD.index].milestones[i].date = new Date();
-		this.countdowns[this.currentCD.index].milestones[i].date.setUTCHours(0, 0, 0, 0);
-		this.countdowns[this.currentCD.index].milestones[i].date.setFullYear( new Date().getFullYear(), new Date().getMonth(), new Date().getDate() );
+		this.countdowns[this.currentCD.index].milestones[i].date = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	}
+}
+
+// These functions return a boolean indicating whether or not the time / marker format has a particular value
+this.timeIsDays = function()
+{
+	return this.format.time.index == this.formats.time.days.index;
+}
+this.timeIsWeeks = function()
+{
+	return this.format.time.index == this.formats.time.weeks.index;
+}
+this.timeIsMonths = function()
+{
+	return this.format.time.index == this.formats.time.months.index;
+}
+this.timeIsMonthDays = function()
+{
+	return this.format.time.index == this.formats.time.monthsdays.index;
+}
+
+this.markerIsPercentage = function()
+{
+	return this.format.marker.index == this.formats.marker.percentage.index;
+}
+this.markerIsNumber = function()
+{
+	return this.format.marker.index == this.formats.marker.number.index;
+}
+this.markerIsDate = function()
+{
+	return this.format.marker.index == this.formats.marker.date.index;
+}
+this.markerIsName = function()
+{
+	return this.format.marker.index == this.formats.marker.name.index;
 }
 
 });
