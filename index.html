@@ -64,7 +64,9 @@
 	<div id="errorDialogTitle" class="dialogTitle">Error - Invalid Input</div>
 	<div id="errorDialogText" class="dialogText">The input caused the following errors: </div>
 	<div id="errorList">
-		<p class="errorText" ng-repeat="message in errors.messages"> * {{message.text}}</p>
+		<ul class="errorListUL">
+		   <li class="errorText" ng-repeat="message in errors.messages">{{message.text}}</li>
+		</ul>
 	</div>
 	<div id="okButtonErrorDialog" class="closeInfo" ng-class="{'lightModeDialogButton': theme.value == light, 'darkModeDialogButton': theme.value == dark}" ng-click="show.configure.error = false">OK</div>
 </div>
@@ -76,7 +78,7 @@
 	<div id="infoText" class="dialogText">
 	Milestones is a web app for visually measuring how far you are towards reaching a certain day, and allows you to plot milestones that happen along the way.
 	<br></br>
-	Milestones version 5 (January 2024)
+	Milestones version 5.1 (February 2024)
 	</div>
 
 	<div id="closeInfo" class="dialogClose" ng-click="show.configure.info = false" ng-class="{'lightModeDialogButton': theme.value == light, 'darkModeDialogButton': theme.value == dark}">Close</div>
@@ -117,6 +119,7 @@
 				<p class="selectionItem" ng-click="format.marker = formats.marker.percentage; show.settings.marker = false">Percentage<img id="tickPercentage" class="tickGraphic" ng-hide="format.marker.index != formats.marker.percentage.index" src="Icons/tick.svg"></p>
 				<p class="selectionItem" ng-click="format.marker = formats.marker.number; show.settings.marker = false">Day Number<img id="tickDayNum" class="tickGraphic" ng-hide="format.marker.index != formats.marker.number.index" src="Icons/tick.svg"></p>
 				<p class="selectionItem" ng-click="format.marker = formats.marker.date; show.settings.marker = false" id="markerDateOption">Date<img id="tickDate" class="tickGraphic" ng-hide="format.marker.index != formats.marker.date.index" src="Icons/tick.svg"></p>
+				<p class="selectionItem" ng-click="format.marker = formats.marker.name; show.settings.marker = false" id="markerNameOption">Name<img id="tickName" class="tickGraphic" ng-hide="format.marker.index != formats.marker.name.index" src="Icons/tick.svg"></p>
 			</div>
 		</div>
 	</div>
@@ -306,7 +309,9 @@
 	<div id="importValueErrorDialogTitle" class="dialogTitle">Invalid Values in Countdown Text</div>
 	<div id="importValueErrorDialogText" class="dialogText">The countdown text has the correct fields, however some values are invalid:</div>
 	<div id="importValueErrorList">
-		<p class="errorText" ng-repeat="message in importValueErrors.messages"> * {{message.text}}</p>
+		<ul class="errorListUL">
+		  <li class="errorText" ng-repeat="message in importValueErrors.messages">{{message.text}}</li>
+		</ul>
 	</div>
 	<div id="okButtonImportValueErrorDialog" class="closeInfo" ng-class="{'lightModeDialogButton': theme.value == light, 'darkModeDialogButton': theme.value == dark}" ng-click="show.importCountdown.valueErrors = false">OK</div>
 </div>
