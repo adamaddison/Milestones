@@ -10,20 +10,17 @@ this.saveCountdownsToStorage = function()
 {
 	if(this.countdownInputValid())
 	{
-		// Normalising the date values to midnight before saving and calculating the progress bar
+		// Normalising the date values to midnight UTC before saving and calculating the progress bar
 		var startDateBeforeHourReset = new Date(this.countdowns[this.currentCD.index].startDate);
-		this.countdowns[this.currentCD.index].startDate.setUTCHours(0, 0, 0, 0);
-		this.countdowns[this.currentCD.index].startDate.setFullYear( new Date(startDateBeforeHourReset).getFullYear(), new Date(startDateBeforeHourReset).getMonth(), new Date(startDateBeforeHourReset).getDate() );
+		this.countdowns[this.currentCD.index].startDate = new Date( Date.UTC(startDateBeforeHourReset.getFullYear(), startDateBeforeHourReset.getMonth(), startDateBeforeHourReset.getDate()) );
 		
 		var endDateBeforeHourReset = new Date(this.countdowns[this.currentCD.index].endDate);
-		this.countdowns[this.currentCD.index].endDate.setUTCHours(0, 0, 0, 0);
-		this.countdowns[this.currentCD.index].endDate.setFullYear( new Date(endDateBeforeHourReset).getFullYear(), new Date(endDateBeforeHourReset).getMonth(), new Date(endDateBeforeHourReset).getDate() );
+		this.countdowns[this.currentCD.index].endDate = new Date( Date.UTC(endDateBeforeHourReset.getFullYear(), endDateBeforeHourReset.getMonth(), endDateBeforeHourReset.getDate()) );
 		
 		for(var i=0;i<this.countdowns[this.currentCD.index].milestones.length;i++)
 		{
 			var milestoneDateBeforeHourReset = new Date(this.countdowns[this.currentCD.index].milestones[i].date);
-			this.countdowns[this.currentCD.index].milestones[i].date.setUTCHours(0, 0, 0, 0);
-			this.countdowns[this.currentCD.index].milestones[i].date.setFullYear( new Date(milestoneDateBeforeHourReset).getFullYear(), new Date(milestoneDateBeforeHourReset).getMonth(), new Date(milestoneDateBeforeHourReset).getDate() );
+			this.countdowns[this.currentCD.index].milestones[i].date = new Date( Date.UTC(milestoneDateBeforeHourReset.getFullYear(), milestoneDateBeforeHourReset.getMonth(), milestoneDateBeforeHourReset.getDate()) );
 		}
 		
 		
@@ -48,8 +45,7 @@ this.saveCountdownsToStorage = function()
 this.addMilestone = function()
 {
 	var newMilestone = { name: "new milestone", date: new Date() };
-	newMilestone.date.setUTCHours(0, 0, 0, 0);
-	newMilestone.date.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+	newMilestone.date = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	
 	// Up to 10 milestones can be added to a countdown
 	if(this.countdowns[this.currentCD.index].milestones.length < 10)
@@ -71,15 +67,13 @@ this.countdownInputValid = function()
 {
 	// Creating date variables used to check validity of input
 	var startDate = new Date(this.countdowns[this.currentCD.index].startDate);
-	startDate.setUTCHours(0, 0, 0, 0);
-	startDate.setFullYear( new Date(this.countdowns[this.currentCD.index].startDate).getFullYear(), new Date(this.countdowns[this.currentCD.index].startDate).getMonth(), new Date(this.countdowns[this.currentCD.index].startDate).getDate() );
+	startDate = new Date( Date.UTC(new Date(this.countdowns[this.currentCD.index].startDate).getFullYear(), new Date(this.countdowns[this.currentCD.index].startDate).getMonth(), new Date(this.countdowns[this.currentCD.index].startDate).getDate()) );
+	
 	var endDate = new Date(this.countdowns[this.currentCD.index].endDate);
-	endDate.setUTCHours(0, 0, 0, 0);
-	endDate.setFullYear( new Date(this.countdowns[this.currentCD.index].endDate).getFullYear(), new Date(this.countdowns[this.currentCD.index].endDate).getMonth(), new Date(this.countdowns[this.currentCD.index].endDate).getDate() );
+	endDate = new Date( Date.UTC(new Date(this.countdowns[this.currentCD.index].endDate).getFullYear(), new Date(this.countdowns[this.currentCD.index].endDate).getMonth(), new Date(this.countdowns[this.currentCD.index].endDate).getDate()) );
 	
 	var currentDate = new Date();
-	currentDate.setUTCHours(0, 0, 0, 0);
-	currentDate.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+	currentDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	
 	var startDatePlus5000Days = new Date(startDate);
 	startDatePlus5000Days.setDate(startDatePlus5000Days.getDate() + 5000);
@@ -99,34 +93,33 @@ this.countdownInputValid = function()
 	if( !(endDate > startDate) )
 	{
 		isValid = false;
-		this.errors.messages.push({ text: "The end date must come after the start date."});
+		this.errors.messages.push({ text: "The end date (" + endDate.toDateString() + ") must come after the start date (" + startDate.toDateString() + ")."});
 	}
 	
 	if( !(endDate <= startDatePlus5000Days) )
 	{
 		isValid = false;
-		this.errors.messages.push({ text: "The end date cannot be more than 5000 days after the start date."});
+		this.errors.messages.push({ text: "The end date (" + endDate.toDateString() + ") cannot be more than 5000 days after the start date (" + startDate.toDateString() + ")."});
 	}
 	
 	// Checking the validity of date and name properties of each milestone
 	for(var i=0;i<this.countdowns[this.currentCD.index].milestones.length;i++)
 	{
 		var milestoneDate = new Date(this.countdowns[this.currentCD.index].milestones[i].date);
-		milestoneDate.setUTCHours(0, 0, 0, 0);
-		milestoneDate.setFullYear( new Date(this.countdowns[this.currentCD.index].milestones[i].date).getFullYear(), new Date(this.countdowns[this.currentCD.index].milestones[i].date).getMonth(), new Date(this.countdowns[this.currentCD.index].milestones[i].date).getDate() );
+		milestoneDate = new Date( Date.UTC(new Date(this.countdowns[this.currentCD.index].milestones[i].date).getFullYear(), new Date(this.countdowns[this.currentCD.index].milestones[i].date).getMonth(), new Date(this.countdowns[this.currentCD.index].milestones[i].date).getDate()) );
 		
 		var milestoneName = this.countdowns[this.currentCD.index].milestones[i].name;
 		
 		if( !(milestoneDate >= startDate) )
 		{
 			isValid = false;
-			this.errors.messages.push({ text: "Milestone '" + milestoneName + "' date cannot be before start date."});
+			this.errors.messages.push({ text: "Milestone '" + milestoneName + "' date (" + milestoneDate.toDateString() + ") cannot be before start date (" + startDate.toDateString() + ")."});
 		}
 		
 		if( !(milestoneDate <= endDate) && (endDate > startDate) ) // Error message not shown if end <= start as it would be redundant
 		{
 			isValid = false;
-			this.errors.messages.push({ text: "Milestone '" + milestoneName + "' date cannot be after the end date."});
+			this.errors.messages.push({ text: "Milestone '" + milestoneName + "' date (" + milestoneDate.toDateString() + ") cannot be after the end date (" + endDate.toDateString() + ")."});
 		}
 		
 		if( !(milestoneName.length <= 100) )
@@ -141,13 +134,13 @@ this.countdownInputValid = function()
 	if( !(startDate <= currentDate) )
 	{
 		isValid = false;
-		this.errors.messages.push({ text: "The start date cannot come after the current date."});
+		this.errors.messages.push({ text: "The start date (" + startDate.toDateString() + ") cannot come after the current date."});
 	}
 	
 	if( !(startDate >= currentDateMinus5000Days) )
 	{
 		isValid = false;
-		this.errors.messages.push({ text: "The start date cannot be more than 5000 days ago."});
+		this.errors.messages.push({ text: "The start date (" + startDate.toDateString() + ") cannot be more than 5000 days ago."});
 	}
 	
 	if( !(countdownName.length <= 60) )
