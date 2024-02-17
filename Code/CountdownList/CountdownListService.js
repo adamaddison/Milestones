@@ -33,14 +33,9 @@ this.addCountdown = function()
 		};
 		
 		// Initialising date values and setting to 0000 UTC
-		newCountdown.endDate.setUTCHours(0, 0, 0, 0);
-		newCountdown.endDate.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 10);
-
-		newCountdown.startDate.setUTCHours(0, 0, 0, 0);
-		newCountdown.startDate.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-
-		newCountdown.milestones[0].date.setUTCHours(0, 0, 0, 0);
-		newCountdown.milestones[0].date.setFullYear(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+		newCountdown.endDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 10) );
+		newCountdown.startDate = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
+		newCountdown.milestones[0].date = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 		
 		// Adding countdown object to overall array
 		this.countdowns.push(newCountdown);
