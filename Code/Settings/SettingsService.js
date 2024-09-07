@@ -12,7 +12,9 @@ this.languages =
 	Deutsch: { index: 2, text: "Deutsch"},
 	Espanol: { index: 3, text: "Español"},
 	Portugues: { index: 4, text: "Português"},
-	Italiano: { index: 5, text: "Italiano"}
+	Italiano: { index: 5, text: "Italiano"},
+	Polski: { index: 6, text: "Polski"},
+	Russkiy: { index: 7, text: "Русский"}
 }
 this.language = { value: this.languages.English };
 if(localStorage.language !== undefined){ this.language = JSON.parse(localStorage.language); }
@@ -112,6 +114,38 @@ var italianPhrases =
 	statusBarMessage: "Messaggio Nella Barra di Stato",
 	milestonesCompletedToday: "Pietra Miliares Completati Oggi"
 }
+var polishPhrases = 
+{
+	Days: "Dni",
+	Day: "Dzień",
+	Weeks: "Tygodnie",
+	Week: "Tydzień",
+	Months: "Miesiące",
+	Month: "Miesiąc",
+	Remaining: "Pozostały",
+	remainingUntil: "Pozostało do",
+	Completed: "Zakończony",
+	sinceStart: "od początku",
+	milestoneCountdowns: "Odliczanie kamieni milowych",
+	statusBarMessage: "Wiadomość na Pasku Stanu",
+	milestonesCompletedToday: "Kamieni Milowych Ukończonych Dzisiaj"
+}
+var russianPhrases = 
+{
+	Days: "Дни",
+	Day: "День",
+	Weeks: "Недели",
+	Week: "Неделя",
+	Months: "Месяцы",
+	Month: "Месяц",
+	Remaining: "Оставшийся",
+	remainingUntil: "Осталось до",
+	Completed: "Завершенный",
+	sinceStart: "с начала",
+	milestoneCountdowns: "Обратный отсчет важных событий",
+	statusBarMessage: "Сообщение в строке состояния",
+	milestonesCompletedToday: "Вехи, завершенные сегодня"
+}
 
 // Initialising the phrases object to the correct language (this is used to display the same messages in the selected language)
 this.phrases = {value: englishPhrases};
@@ -138,6 +172,14 @@ else if(this.language.value.index == this.languages.Portugues.index)
 else if(this.language.value.index == this.languages.Italiano.index)
 {
 	this.phrases = {value: italianPhrases};
+}
+else if(this.language.value.index == this.languages.Polski.index)
+{
+	this.phrases = {value: polishPhrases};
+}
+else if(this.language.value.index == this.languages.Russkiy.index)
+{
+	this.phrases = {value: russianPhrases};
 }
 
 
@@ -312,6 +354,8 @@ this.changeLanguage = function(language)
 		case this.languages.Espanol.index: this.phrases.value = spanishPhrases; this.language.value = this.languages.Espanol; break;
 		case this.languages.Portugues.index: this.phrases.value = portuguesePhrases; this.language.value = this.languages.Portugues; break;
 		case this.languages.Italiano.index: this.phrases.value = italianPhrases; this.language.value = this.languages.Italiano; break;
+		case this.languages.Polski.index: this.phrases.value = polishPhrases; this.language.value = this.languages.Polski; break;
+		case this.languages.Russkiy.index: this.phrases.value = russianPhrases; this.language.value = this.languages.Russkiy; break;
 	}
 	
 	RootService.show.settings.languages = false;
@@ -399,6 +443,8 @@ this.resetToYear = function()
 		this.countdowns[this.currentCD.index].milestones[i].date = new Date( Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()) );
 	}
 }
+
+
 
 // These functions return a boolean indicating whether or not the time / marker format has a particular value
 this.timeIsDays = function()

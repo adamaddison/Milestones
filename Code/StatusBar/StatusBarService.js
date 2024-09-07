@@ -32,7 +32,7 @@ this.calculateStatusBarText = function(index = -1)
 		{ 	
 			if(milestones[i].date > currentDate)
 			{
-				var nextSoonestMilestoneName = milestones[i].name;
+				var nextSoonestMilestoneName = (milestones[i].name.length == 0 ? "milestone " + (i+1) : milestones[i].name);
 				var nextSoonestMilestoneDate = milestones[i].date;
 			}
 		}
@@ -46,7 +46,7 @@ this.calculateStatusBarText = function(index = -1)
 				// if the current milestone has a smaller date value and has not yet been reached then it is assigned as the new soonest milestone
 				if(milestones[i].date < nextSoonestMilestoneDate && milestones[i].date > currentDate)
 				{
-					nextSoonestMilestoneName = milestones[i].name;
+					nextSoonestMilestoneName = (milestones[i].name.length == 0 ? "milestone " + (i+1) : milestones[i].name);
 					nextSoonestMilestoneDate = milestones[i].date;	
 				}
 			}
@@ -65,7 +65,7 @@ this.calculateStatusBarText = function(index = -1)
 			if(milestones[i].date.getTime() == currentDate.getTime())
 			{
 				numOfMilestonesCompletedToday += 1;
-				milestoneCompletedMessage = " - " + milestones[i].name + " " + SettingsService.phrases.value.Completed;
+				milestoneCompletedMessage = " - " + (milestones[i].name.length == 0 ? "milestone " + (i+1) : milestones[i].name) + " " + SettingsService.phrases.value.Completed;
 			}
 		}
 		
@@ -89,15 +89,16 @@ this.calculateStatusBarText = function(index = -1)
 		
 		if(daysUntilMilestone > 0)
 		{
-			this.statusBarText.value = daysUntilMilestone + " " + (daysUntilMilestone == 1 ? SettingsService.phrases.value.Day : SettingsService.phrases.value.Days) + " " + SettingsService.phrases.value.remainingUntil + " " + milestone.name;
+			this.statusBarText.value = daysUntilMilestone + " " + (daysUntilMilestone == 1 ? SettingsService.phrases.value.Day : SettingsService.phrases.value.Days) + " " + SettingsService.phrases.value.remainingUntil + " " + (milestone.name.length == 0 ? "milestone " + (index+1) : milestone.name);
 		}
 		// If milestone is reached then <milestone name> Completed is returned
 		else
 		{
-			this.statusBarText.value = milestone.name + ": " + SettingsService.phrases.value.Completed;
+			this.statusBarText.value = (milestone.name.length == 0 ? "milestone " + (index+1) : milestone.name) + ": " + SettingsService.phrases.value.Completed;
 		}
 	}
 }
 this.calculateStatusBarText();
+
 
 });

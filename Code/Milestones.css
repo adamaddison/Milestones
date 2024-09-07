@@ -385,7 +385,9 @@ body{ font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-siz
 {
 	margin-top: 6px;
 	margin-bottom: 0px;
-	padding: 4px
+	padding: 4px;
+	position: relative;
+	text-align: center
 }
 
 #doneButton, #doneButtonImport, #doneButtonExport
@@ -513,12 +515,13 @@ input[type=number]
 
 input[type=date]
 {
-	width: 95px
+	width: 185px
 }
 
 p.extraMilestones input[type=text]
 {
-	width: 165px
+	width: 185px;
+	margin-bottom: 4px
 }
 
 .inputLight
@@ -531,6 +534,11 @@ p.extraMilestones input[type=text]
 {
 	background-color: rgb(67, 67, 67);
 	color: rgb(255, 255, 255)
+}
+
+.countdownTextInput
+{
+	width: 185px
 }
 
 .dialog
@@ -635,6 +643,13 @@ p.extraMilestones input[type=text]
 	opacity: 0
 }
 
+.crossButtonContainer
+{
+	position: absolute;
+	top: 50%;
+	right: 5px;
+	transform: translateY(-50%)
+}
 .crossButton{ vertical-align: middle }
 
 #toggleWeeksRemaining{ vertical-align: middle }
@@ -651,7 +666,7 @@ p.extraMilestones input[type=text]
 
 #openSettings
 {
-	text-align: left;
+	text-align: left !important;
 	padding: 9px !important
 }
 .settingsItem{ padding: 2px }
@@ -738,9 +753,20 @@ p.extraMilestones input[type=text]
 	border-bottom: 1px solid rgb(188, 188, 188)
 }
 
+#countdownValuesContainer
+{
+	text-align: left
+}
+#milestoneValuesContainer
+{
+	text-align: left	
+}
+
 .selectionLabel
 {
-	padding: 9px
+	padding: 9px;
+	text-align: left;
+	color: gray
 }
 
 .tickGraphic
@@ -916,7 +942,7 @@ input
 	vertical-align: middle; position: absolute; right: 9px; width: 18px; display: block; margin-top: -17px
 }
 
-#tickITcontainer
+#tickRUcontainer
 {
 	border-radius: 0 0 12px 12px;
 	border-bottom: 0px

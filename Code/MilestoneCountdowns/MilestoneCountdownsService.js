@@ -26,14 +26,14 @@ this.calculateMilestoneCountdowns = function()
 		
 		if(remainingDaysUntilMilestone > 0)
 		{
-			document.getElementById('milestone'+i+'Name').innerHTML = milestones[i].name;
+			document.getElementById('milestone'+i+'Name').innerHTML = milestones[i].name.length == 0 ? "milestone " + (i+1) : milestones[i].name;
 			document.getElementById('daysUntilMilestone'+i).innerHTML = remainingDaysUntilMilestone == 1 ? remainingDaysUntilMilestone + " " + SettingsService.phrases.value.Day : remainingDaysUntilMilestone + " " + SettingsService.phrases.value.Days;
 			document.getElementById('milestone'+i+'ProgressBar').style.width = progressBarPercentage + "%";
 		}
 		// If remaining days until milestone is 0 or less the progress bar is capped at 100%
 		else
 		{
-			document.getElementById('milestone'+i+'Name').innerHTML = milestones[i].name;
+			document.getElementById('milestone'+i+'Name').innerHTML = milestones[i].name.length == 0 ? "milestone " + (i+1) : milestones[i].name;
 			document.getElementById('daysUntilMilestone'+i).innerHTML = SettingsService.phrases.value.Completed;
 			document.getElementById('milestone'+i+'ProgressBar').style.width = "100%";
 		}
