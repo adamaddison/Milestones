@@ -86,7 +86,7 @@
 	<div id="infoText" class="dialogText">
 	Milestones is a web app for visually measuring how far you are towards reaching a certain day, and allows you to plot milestones that happen along the way.
 	<br></br>
-	Milestones version 5.2 (September 2024)
+	Milestones version 5.3 (February 2025)
 	</div>
 
 	<div id="closeInfo" class="dialogClose" ng-click="show.configure.info = false" ng-class="{'lightModeDialogButton': theme.value == light, 'darkModeDialogButton': theme.value == dark}">Close</div>
@@ -145,7 +145,7 @@
 			<div class="themeOption" ng-click="theme.value = dark; initialiseBackground()"><img id="toggleWeeksRemaining" src="Icons/darkTheme.svg" width="120px" /> <p>Dark</p><img class="themeOptionTickBox" id="tickBoxDark" ng-src="{{theme.value == dark?themeTick:themeNoTick}}" height="27px" /></div>
 			<div class="themeOption" ng-click="theme.value = light; initialiseBackground()"><img id="toggleWeeksRemaining" src="Icons/lightTheme.svg" width="120px" /> <p>Light</p><img class="themeOptionTickBox" id="tickBoxLight" ng-src="{{theme.value == light?themeTick:themeNoTick}}" height="27px" /></div>
 			<p class="selectionItem" ng-click="autoThemeSetting.value = !autoThemeSetting.value; initialiseTheme(); initialiseBackground()">
-			  <span class="settingsItemText">Automatic</span>
+			  <span class="settingsItemText">System / Automatic</span>
 			  <span class="settingsItemIcon"> <img id="autoThemeToggle" ng-src="{{autoThemeSetting.value?on:off}}" height="30px" /> </span>
 			</p>
 	   </div>
@@ -302,6 +302,7 @@
 		<div id="addCountdownOptionsContainer" ng-show="show.countdownList.add && countdowns.length<10" ng-class="{'opacityFull': show.countdownList.add, 'lightModeListDialogBackground': theme.value == light, 'darkModeListDialogBackground': theme.value == dark}">
 			<div id="addCountdownOptionsContent" ng-class="{'lightModeText': theme.value == light, 'darkModeText': theme.value == dark}">
 				<p class="selectionItem" ng-click="addCountdown();show.countdownList.add = false">Add New Countdown</p>
+				<p class="selectionItem" ng-click="addCountdown(true);show.countdownList.add = false">Year-to-Year Countdown</p>
 				<p class="selectionItem" ng-click="show.importCountdown.window = true;show.countdownList.add = false" id="addCountdownImportOption">Import Existing Countdown</p>
 			</div>
 		</div>
@@ -348,7 +349,7 @@
 </div>
 
 
-<div id="milestoneCountdowns" ng-class="{'milestoneCountdownsLight': theme.value == light, 'milestoneCountdownsDark': theme.value == dark}" ng-controller="milestone-countdowns-controller" ng-show="show.milestoneCountdowns">
+<div id="milestoneCountdowns" ng-class="{'milestoneCountdownsLight': theme.value == light, 'milestoneCountdownsDark': theme.value == dark, 'milestoneCountdownsShow': show.milestoneCountdowns, 'msCountdownsWide': makePaneWiderForLang()}" ng-controller="milestone-countdowns-controller">
 	<div id="milestoneCountdownsHeader" ng-class="{'lightModeHeaderBackground': theme.value == light, 'darkModeHeaderBackground': theme.value == dark}"> {{phrases.value.milestoneCountdowns}} <span id="milestoneCountdownsDoneButton" ng-click="show.milestoneCountdowns = false">Done</span></div>
    	<div id="milestoneCountdownsContent" ng-class="{'milestoneCountdownsContentLight': theme.value == light, 'milestoneCountdownsContentDark': theme.value == dark}">
 		<div id="NoMilestonesText" ng-show="countdowns[currentCD.index].milestones.length == 0">No Milestones</div>

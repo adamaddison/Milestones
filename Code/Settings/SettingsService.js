@@ -293,30 +293,13 @@ this.changeBackground = function(backgroundURL)
 // This function initialises the theme on load to the correct value if auto theme is enabled
 this.initialiseTheme = function()
 {
-	// Automatically setting the theme to dark or light depending on the time of day if auto theme is enabled
+	// If auto theme is true the theme is set to OS theme
 	if(this.autoThemeSetting.value)
-	{
-		// Creating variables to represent the hours 18:00, 00:00, and 06:00, as well as the current time
-		var currentTime = new Date();
-		var evening = new Date();
-		    evening.setHours(18, 0, 0);
-		var morning = new Date();
-		    morning.setHours(6, 0, 0);
-		var midnight = new Date();
-		    midnight.setHours(0, 0, 0);
-			
-		// This boolean represents if the current time is between 00:00 - 06:00
-		var midnightToMorning = (currentTime.getHours() >= midnight.getHours() && currentTime.getHours() < morning.getHours());
-		
-		// This boolean represents if the current time is between 18:00 - 00:00
-		var eveningToMidnight = (currentTime.getHours() >= evening.getHours() && currentTime.getHours() < 24);
-			
-		// It will set the theme to dark mode if the time is between 18:00 - 06:00
-		if(eveningToMidnight || midnightToMorning)
+	{			
+		if( window.matchMedia('(prefers-color-scheme: dark)').matches )
 		{
 			this.theme.value = this.dark;
 		}
-		// Otherwise if the time is between 06:00 - 18:00 light mode is used
 		else
 		{
 			this.theme.value = this.light;

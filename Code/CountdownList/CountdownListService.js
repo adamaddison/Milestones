@@ -1,4 +1,4 @@
-milestonesModule.service("CountdownListService", function(RootService, ConfigureService)
+milestonesModule.service("CountdownListService", function(RootService, ConfigureService, SettingsService)
 {
 
 this.countdowns = RootService.countdowns;
@@ -18,7 +18,7 @@ this.switchCountdown = function(newIndex)
 	}
 }
 
-this.addCountdown = function()
+this.addCountdown = function(yearToYear)
 {
 	if(this.countdowns.length < 10)
 	{
@@ -39,6 +39,12 @@ this.addCountdown = function()
 		
 		// Adding countdown object to overall array
 		this.countdowns.push(newCountdown);
+		
+		if(yearToYear)
+		{
+			this.currentCD.index = this.countdowns.length-1;
+			SettingsService.resetToYear();
+		}
 		
 		// Switching to newly created countdown
 		this.switchCountdown(this.countdowns.length-1);

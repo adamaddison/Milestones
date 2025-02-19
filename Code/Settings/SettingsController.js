@@ -45,6 +45,14 @@ $scope.initialiseBackground = function()
 	SettingsService.initialiseBackground();
 }
 
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) =>
+{
+	$scope.initialiseTheme();
+	$scope.initialiseBackground();
+	$scope.$apply();
+}
+);
+
 $scope.saveSettings = function()
 {
 	SettingsService.saveSettings();

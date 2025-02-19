@@ -24,9 +24,9 @@ $scope.switchCountdown = function(index)
 	CountdownListService.switchCountdown(index);
 }
 
-$scope.addCountdown = function()
+$scope.addCountdown = function(yearToYear = false)
 {
-	CountdownListService.addCountdown();
+	CountdownListService.addCountdown(yearToYear);
 }
 
 $scope.deleteCountdown = function()
